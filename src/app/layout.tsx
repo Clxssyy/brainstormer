@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./_components/Header";
+import Sidebar from "./_components/Sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,9 +24,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
-        <Header />
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+      <body className={`font-sans ${inter.variable} h-screen`}>
+        <TRPCReactProvider>
+          <main className="flex h-full flex-col">
+            <Header />
+            <div className="flex h-full">
+              <Sidebar />
+              {children}
+            </div>
+          </main>
+        </TRPCReactProvider>
       </body>
     </html>
   );
