@@ -7,6 +7,5 @@
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--main-bg-color);
-  @apply rounded;
+  @apply rounded bg-neutral-900;
 }

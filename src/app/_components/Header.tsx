@@ -6,7 +6,7 @@ const Header = async () => {
   const session = await getServerAuthSession();
 
   return (
-    <header className="relative flex place-items-center border-b border-neutral-800 bg-neutral-900 p-2 text-white shadow-lg">
+    <header className="flex h-14 place-items-center border-b border-neutral-800 bg-neutral-900 p-2 text-white">
       <div className="w-1/3">
         <div className="w-fit">
           <Link href="/">

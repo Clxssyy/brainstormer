@@ -24,11 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} h-screen`}>
+      <body className={`font-sans ${inter.variable} h-screen overflow-hidden`}>
         <TRPCReactProvider>
-          <main className="flex h-full flex-col">
+          <main className="flex h-screen flex-col overflow-hidden">
             <Header />
-            <div className="flex h-full">
+            <div className="flex grow overflow-hidden">
               <Sidebar />
               {children}
             </div>
