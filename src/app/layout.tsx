@@ -30,7 +30,7 @@ export default function RootLayout({
             <Header />
             <div className="flex grow overflow-hidden">
               <Sidebar />
-              {children}
+              <div className="flex grow flex-col">{children}</div>
             </div>
           </main>
         </TRPCReactProvider>

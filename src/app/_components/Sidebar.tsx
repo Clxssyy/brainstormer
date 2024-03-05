@@ -10,10 +10,10 @@ const Sidebar = () => {
 
   return (
     <nav
-      className={`${hidden ? "w-14" : "w-1/6"} custom-scroll flex flex-col place-items-center overflow-x-hidden  overflow-y-scroll text-nowrap bg-neutral-900 text-white shadow-lg`}
+      className={`custom-scroll flex min-w-fit flex-col place-items-center overflow-x-hidden  overflow-y-scroll text-nowrap bg-neutral-900 text-white shadow-lg`}
     >
       <div
-        className={`${hidden ? "" : "w-full justify-between"} flex p-2 pr-0`}
+        className={`${hidden ? "" : "w-full justify-between"} flex gap-2 p-2 pr-0`}
       >
         {hidden ? (
           <button onClick={() => setHidden(!hidden)}>

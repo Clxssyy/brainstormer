@@ -8,7 +8,7 @@ const FeatureCard = ({
   children: string;
 }) => {
   return (
-    <div className="rounded-lg bg-neutral-800 p-4 shadow-lg">
+    <div className="rounded-lg bg-neutral-900 p-4 shadow-lg">
       <h2 className="text-2xl font-semibold">{title}</h2>
       <p className="mt-2">{children}</p>
     </div>
@@ -21,20 +21,20 @@ export default async function Home() {
   return (
     <div className="grow overflow-hidden bg-neutral-950 text-white">
       <div className="custom-scroll flex h-full flex-col place-items-center gap-2 overflow-y-auto overflow-x-hidden p-8">
-        <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
+        <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-2xl font-bold text-transparent md:text-6xl">
           Welcome to{" "}
           <span className="bg-gradient-to-r from-amber-400 to-pink-500 bg-clip-text">
             Brainstormer
           </span>
           !
         </h1>
-        <p className="text-center">
+        <p className="text-center text-sm">
           From random thoughts to complete stories, Brainstormer is the place to
           be!
         </p>
         <a
           href="/api/auth/signin"
-          className="rounded bg-amber-400 p-3 font-semibold text-black transition duration-300 ease-in-out hover:bg-amber-500"
+          className="rounded-3xl bg-amber-400 px-4 py-2 font-semibold text-black transition duration-300 ease-in-out hover:bg-amber-500"
         >
           Get Started
         </a>
