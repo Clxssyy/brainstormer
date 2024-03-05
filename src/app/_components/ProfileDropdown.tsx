@@ -27,7 +27,7 @@ const ProfileDropdown = ({ session }: { session: Session }) => {
       <div
         className={`${hidden ? "hidden" : ""} absolute right-0 top-10 flex flex-col divide-y divide-neutral-800 rounded-lg bg-neutral-900`}
       >
-        <Link href="/profile">
+        <Link href={`/user/${session.user.name}`}>
           <div className="flex place-items-center gap-2 p-2">
             <FaUser />
             <h4>Profile</h4>
