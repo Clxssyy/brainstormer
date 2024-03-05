@@ -1,6 +1,12 @@
 import { unstable_noStore as noStore } from "next/cache";
 
-const FeatureCard = ({ title, children }) => {
+const FeatureCard = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: string;
+}) => {
   return (
     <div className="rounded-lg bg-neutral-800 p-4 shadow-lg">
       <h2 className="text-2xl font-semibold">{title}</h2>
@@ -14,7 +20,7 @@ export default async function Home() {
 
   return (
     <div className="grow overflow-hidden bg-neutral-950 text-white">
-      <div className="custom-scroll flex h-full flex-col place-items-center overflow-y-auto overflow-x-hidden p-8">
+      <div className="custom-scroll flex h-full flex-col place-items-center gap-2 overflow-y-auto overflow-x-hidden p-8">
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
           Welcome to{" "}
           <span className="bg-gradient-to-r from-amber-400 to-pink-500 bg-clip-text">
@@ -22,7 +28,7 @@ export default async function Home() {
           </span>
           !
         </h1>
-        <p className="my-4 text-center">
+        <p className="text-center">
           From random thoughts to complete stories, Brainstormer is the place to
           be!
         </p>
@@ -32,7 +38,7 @@ export default async function Home() {
         >
           Get Started
         </a>
-        <div className="mt-8 grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grow grid-cols-1 gap-8 md:grid-cols-3">
           <FeatureCard title="Transform your thoughts">
             Transform your random thoughts into entire short stories!
           </FeatureCard>
