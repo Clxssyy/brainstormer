@@ -2,6 +2,7 @@ import SidebarDropdown from "./SidebarDropdown";
 import { api } from "~/trpc/server";
 import { getServerAuthSession } from "~/server/auth";
 import Image from "next/image";
+import Link from "next/link";
 
 const Sidebar = async () => {
   const session = await getServerAuthSession();
@@ -31,7 +32,11 @@ const Sidebar = async () => {
       <SidebarDropdown title="Following">
         {following?.map((follow) => {
           return (
-            <div key={follow.id} className="flex place-items-center gap-2">
+            <Link
+              key={follow.id}
+              href={`/user/${follow.name}`}
+              className="flex place-items-center gap-2 px-2 py-1 hover:bg-white/5"
+            >
               <Image
                 src={follow.image ?? "/default-avatar.png"}
                 alt={follow.name ?? "User"}
@@ -39,8 +44,8 @@ const Sidebar = async () => {
                 height={32}
                 className="rounded-full"
               />
-              <a href={`/user/${follow.name}`}>{follow?.name}</a>
-            </div>
+              <p className="text-sm font-semibold">{follow?.name}</p>
+            </Link>
           );
         })}
       </SidebarDropdown>
