@@ -11,7 +11,7 @@ const FollowButton = ({
 }: {
   user: any;
   profile: any;
-  session: Session | undefined;
+  session: Session | null;
 }) => {
   const router = useRouter();
   const follow = api.user.follow.useMutation({

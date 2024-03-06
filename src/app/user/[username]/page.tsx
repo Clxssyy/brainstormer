@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import FollowButton from "../_components/FollowButton";
 
 const userPage = async ({ params }: { params: { username: string } }) => {
   const session = await getServerAuthSession();
@@ -44,6 +45,7 @@ const userPage = async ({ params }: { params: { username: string } }) => {
           </p>
         </div>
         {profile ? <p>you</p> : null}
+        <FollowButton user={user} profile={profile} session={session} />
       </div>
     </div>
   );
