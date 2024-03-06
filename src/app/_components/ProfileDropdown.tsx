@@ -56,13 +56,21 @@ const ProfileDropdown = ({ session }: { session: Session }) => {
             <h4>Profile</h4>
           </div>
         </Link>
-        <Link href={"/create"} className="md:hidden">
+        <Link
+          href={"/create"}
+          className="md:hidden"
+          onClick={() => setHidden(true)}
+        >
           <div className="flex place-items-center gap-2 p-2">
             <FaBrain />
             <h4>Create</h4>
           </div>
         </Link>
-        <Link href={"/explore"} className="md:hidden">
+        <Link
+          href={"/explore"}
+          className="md:hidden"
+          onClick={() => setHidden(true)}
+        >
           <div className="flex place-items-center gap-2 p-2">
             <FaMagnifyingGlass />
             <h4>Explore</h4>
