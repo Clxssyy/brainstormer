@@ -9,3 +9,22 @@
 .custom-scroll::-webkit-scrollbar-thumb {
   @apply rounded bg-neutral-900;
 }
+
+.error-bg {
+  background: url("/tile_background.png");
+  background-size: cover;
+}
+
+.profile-border {
+  box-shadow: 0 0 5px 4px rgba(251, 191, 36);
+  animation: profile-glow 2s alternate infinite;
+}
+
+@keyframes profile-glow {
+  0% {
+    box-shadow: 0 0 5px 4px rgba(251, 191, 36);
+  }
+  100% {
+    box-shadow: 0 0 5px 4px rgba(236, 72, 153);
+  }
+}
