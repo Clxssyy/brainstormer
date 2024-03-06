@@ -59,9 +59,22 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    createdAt     DateTime  @default(now())
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    following     UserFollows[] @relation("UserFollowing")
+    followers     UserFollows[] @relation("UserFollowers")
+}
+
+model UserFollows {
+    id        Int      @id @default(autoincrement())
+    user      User     @relation("UserFollowers", fields: [userId], references: [id])
+    userId    String
+    follows   User     @relation("UserFollowing", fields: [followsId], references: [id])
+    followsId String
+
+    @@unique([userId, followsId])
 }
 
 model VerificationToken {

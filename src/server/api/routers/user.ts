@@ -7,11 +7,16 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  getByName: protectedProcedure
+  getByName: publicProcedure
     .input(z.object({ name: z.string().min(1) }))
     .query(({ input, ctx }) => {
       return ctx.db.user.findFirst({
         where: { name: input.name },
+        include: {
+          posts: true,
+          followers: true,
+          following: true,
+        },
       });
     }),
 });
