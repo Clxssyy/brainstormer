@@ -33,19 +33,33 @@ const userPage = async ({ params }: { params: { username: string } }) => {
             className="profile-border rounded-full"
           />
         </div>
-        <h1 className="text-center text-4xl font-bold">{user.name}</h1>
+        <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+          {user.name}
+        </h1>
+        <p className="text-center text-xs">
+          Joined: {String(user.createdAt.toLocaleDateString())}
+        </p>
         <div className="place-self-center rounded bg-neutral-900 p-2">
           <div className="flex gap-4">
             <p>Followers: {user.followers.length}</p>
             <p>Following: {user.following.length}</p>
           </div>
-          <p>Posts: {user.posts.length}</p>
-          <p className="text-center text-xs">
-            Joined: {String(user.createdAt.toLocaleDateString())}
-          </p>
+          <p className="text-center">Posts: {user.posts.length}</p>
         </div>
-        {profile ? <p>you</p> : null}
-        <FollowButton user={user} profile={profile} session={session} />
+        {profile ? null : <FollowButton user={user} session={session} />}
+        <div>
+          <h1 className="text-2xl font-bold">Posts</h1>
+          <div>
+            {user.posts.map((post) => {
+              return (
+                <div key={post.id} className="flex gap-4">
+                  <p>{post.name}</p>
+                  <p>{post.createdAt.toLocaleDateString()}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
