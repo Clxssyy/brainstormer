@@ -63,8 +63,8 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
-    following     UserFollows[] @relation("UserFollowing")
-    followers     UserFollows[] @relation("UserFollowers")
+    following     UserFollows[] @relation("UserFollowers")
+    followers     UserFollows[] @relation("UserFollowing")
 }
 
 model UserFollows {

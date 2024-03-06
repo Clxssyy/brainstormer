@@ -19,4 +19,26 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+
+  follow: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.userFollows.create({
+        data: {
+          user: { connect: { id: ctx.session.user.id } },
+          follows: { connect: { id: input.id } },
+        },
+      });
+    }),
+
+  unfollow: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.userFollows.deleteMany({
+        where: {
+          userId: ctx.session.user.id,
+          followsId: input.id,
+        },
+      });
+    }),
 });
