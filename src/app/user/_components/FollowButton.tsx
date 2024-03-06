@@ -6,11 +6,9 @@ import { api } from "~/trpc/react";
 
 const FollowButton = ({
   user,
-  profile,
   session,
 }: {
   user: any;
-  profile: any;
   session: Session | null;
 }) => {
   const router = useRouter();
@@ -34,11 +32,10 @@ const FollowButton = ({
 
   if (!session) return null;
 
-  if (profile) return null;
-
   if (user.followers.some((u: any) => u.userId === session.user.id)) {
     return (
       <button
+        className="place-self-center rounded-full bg-amber-500 px-3 text-black hover:bg-amber-400"
         onClick={() => {
           unfollow.mutate({ id: user.id });
         }}
@@ -49,6 +46,7 @@ const FollowButton = ({
   } else {
     return (
       <button
+        className="place-self-center rounded-full bg-amber-400 px-3 text-black hover:bg-amber-500"
         onClick={() => {
           follow.mutate({ id: user.id });
         }}
