@@ -3,15 +3,35 @@
 import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { FaUser } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaUser, FaBrain } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const ProfileDropdown = ({ session }: { session: Session }) => {
   const [hidden, setHidden] = useState<boolean>(true);
 
+  const ref = useRef(null);
+
+  const handleClickOutside = (event: any) => {
+    if (
+      ref.current &&
+      !(ref.current as unknown as HTMLElement).contains(event.target)
+    ) {
+      setHidden(true);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center" ref={ref}>
       <button
         className="gap-2 rounded-full ring-2 ring-amber-400"
         onClick={() => setHidden(!hidden)}
@@ -27,13 +47,28 @@ const ProfileDropdown = ({ session }: { session: Session }) => {
       <div
         className={`${hidden ? "hidden" : ""} absolute right-0 top-10 flex flex-col divide-y divide-neutral-800 rounded-lg bg-neutral-900`}
       >
-        <Link href={`/user/${session.user.name}`}>
+        <Link
+          href={`/user/${session.user.name}`}
+          onClick={() => setHidden(true)}
+        >
           <div className="flex place-items-center gap-2 p-2">
             <FaUser />
             <h4>Profile</h4>
           </div>
         </Link>
-        <Link href="/api/auth/signout">
+        <Link href={"/create"} className="md:hidden">
+          <div className="flex place-items-center gap-2 p-2">
+            <FaBrain />
+            <h4>Create</h4>
+          </div>
+        </Link>
+        <Link href={"/explore"} className="md:hidden">
+          <div className="flex place-items-center gap-2 p-2">
+            <FaMagnifyingGlass />
+            <h4>Explore</h4>
+          </div>
+        </Link>
+        <Link href="/api/auth/signout" onClick={() => setHidden(true)}>
           <div className="flex place-items-center gap-2 p-2">
             <TbLogout />
             <h4>Logout</h4>

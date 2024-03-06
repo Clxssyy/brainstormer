@@ -7,7 +7,7 @@ const Header = async () => {
 
   return (
     <header className="flex h-14 place-items-center border-b border-neutral-800 bg-neutral-900 p-2 text-white">
-      <div className="w-1/3">
+      <div className="w-1/2 md:w-1/3">
         <div className="w-fit">
           <Link href="/">
             <h1 className="max-w-fit bg-gradient-to-r from-amber-400 to-pink-500 bg-clip-text text-center text-4xl font-bold text-transparent">
@@ -19,11 +19,11 @@ const Header = async () => {
           </Link>
         </div>
       </div>
-      <nav className="flex w-1/3 justify-center gap-4 font-semibold">
+      <nav className="hidden w-1/3 justify-center gap-4 font-semibold md:flex">
         <Link href="/create">Create</Link>
         <Link href="/explore">Explore</Link>
       </nav>
-      <div className="flex w-1/3 justify-end">
+      <div className="flex w-1/2 justify-end md:w-1/3">
         {session ? (
           <ProfileDropdown session={session} />
         ) : (
