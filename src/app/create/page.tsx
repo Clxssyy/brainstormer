@@ -10,7 +10,7 @@ const CreatePage = () => {
   });
 
   return (
-    <div className="flex grow justify-center bg-neutral-900 p-8">
+    <div className="flex grow justify-center bg-neutral-950 p-8">
       <div>
         <input type="text" id="name" className="p-4" />
         <button

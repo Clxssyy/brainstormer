@@ -40,7 +40,7 @@ const Sidebar = async () => {
               href={`/post/${String(post.id)}`}
               className="flex h-10 place-items-center gap-2 px-2 py-1 hover:bg-white/5"
             >
-              <FaBrain className={`h-8 w-8 ${bool ? "text-pink-500" : ""}`} />
+              <FaBrain className={`h-6 w-6 ${bool ? "text-pink-500" : ""}`} />
               <p className="text-sm font-semibold">{post?.name}</p>
             </Link>
           );
