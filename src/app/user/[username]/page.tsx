@@ -21,6 +21,11 @@ const userPage = async ({ params }: { params: { username: string } }) => {
 
   if (session?.user?.name === user.name) profile = true;
 
+  const posts = await api.post.getAllById.query({
+    published: !profile,
+    id: user.id,
+  });
+
   return (
     <div className="flex grow flex-col bg-neutral-950 text-white">
       <div className="flex flex-col gap-2 p-8">
@@ -44,13 +49,13 @@ const userPage = async ({ params }: { params: { username: string } }) => {
             <p>Followers: {user.followers.length}</p>
             <p>Following: {user.following.length}</p>
           </div>
-          <p className="text-center">Posts: {user.posts.length}</p>
+          <p className="text-center">Posts: {posts.items.length}</p>
         </div>
         {profile ? null : <FollowButton user={user} session={session} />}
         <div>
           <h1 className="text-2xl font-bold">Posts</h1>
           <div>
-            {user.posts.map((post) => {
+            {posts.items.map((post) => {
               return (
                 <div key={post.id} className="flex gap-4">
                   <p>{post.name}</p>

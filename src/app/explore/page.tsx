@@ -8,6 +8,7 @@ const ExplorePage = () => {
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const postsQuery = api.post.getAll.useInfiniteQuery(
     {
+      published: true,
       direction: direction,
     },
     {

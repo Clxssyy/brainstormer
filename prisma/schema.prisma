@@ -15,15 +15,32 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    pages       Page[]   @relation("PostPages")
+    published   Boolean  @default(false)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
 
     @@index([name])
+}
+
+model Page {
+    id        Int      @id @default(autoincrement())
+    content   String
+    image     String?
+    number    Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    post      Post     @relation("PostPages", fields: [postId], references: [id])
+    postId    Int
+
+    @@unique([postId, number])
 }
 
 // Necessary for Next auth

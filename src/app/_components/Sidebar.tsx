@@ -16,8 +16,6 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
     user = api.user.getById.useQuery({ id: session?.user.id }).data;
   }
 
-  const bool = true;
-
   return (
     <nav
       className={`hidden overflow-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14" : "w-1/4 lg:w-1/6"}`}
@@ -50,7 +48,7 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               >
                 <div className="flex w-full place-items-center gap-2">
                   <FaBrain
-                    className={`h-6 min-w-6 ${bool ? "text-pink-500" : ""}`}
+                    className={`h-6 min-w-6 ${post.published ? "text-pink-500" : "text-neutral-500"}`}
                   />
                   <p
                     className={`grow truncate text-sm font-semibold ${hidden ? "hidden" : ""}`}
