@@ -40,12 +40,20 @@ export default async function Home() {
           be!
         </p>
       </div>
-      <Link
-        href={session ? "/create" : "/api/auth/signin"}
-        className="w-fit place-self-center rounded-3xl bg-amber-400 px-4 py-2 font-semibold text-black transition duration-300 ease-in-out hover:bg-amber-500"
-      >
-        Get Started
-      </Link>
+      <div className="flex justify-center gap-8">
+        <Link
+          href={session ? "/create" : "/api/auth/signin"}
+          className="w-36 place-self-center rounded-3xl bg-amber-400 px-4 py-2 text-center font-semibold text-black transition duration-300 ease-in-out hover:bg-amber-500"
+        >
+          Get Started
+        </Link>
+        <Link
+          href="/explore"
+          className="w-36 place-self-center rounded-3xl px-4 py-2 text-center font-semibold text-white ring-1 ring-amber-400 transition duration-300 ease-in-out hover:bg-white/5"
+        >
+          Examples
+        </Link>
+      </div>
       <div className="grid grow grid-cols-1 gap-8 md:grid-cols-2">
         <FeatureCard title="Transform your thoughts">
           Transform your random thoughts into entire short stories!
