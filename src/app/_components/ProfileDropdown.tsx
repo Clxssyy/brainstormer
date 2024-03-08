@@ -4,7 +4,7 @@ import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { FaUser, FaBrain } from "react-icons/fa";
+import { FaUser, FaBrain, FaHeart } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
@@ -74,6 +74,16 @@ const ProfileDropdown = ({ session }: { session: Session }) => {
           <div className="flex place-items-center gap-2 p-2">
             <FaMagnifyingGlass />
             <h4>Explore</h4>
+          </div>
+        </Link>
+        <Link
+          href={"/following"}
+          className="md:hidden"
+          onClick={() => setHidden(true)}
+        >
+          <div className="flex place-items-center gap-2 p-2">
+            <FaHeart />
+            <h4>Following</h4>
           </div>
         </Link>
         <Link href="/api/auth/signout" onClick={() => setHidden(true)}>

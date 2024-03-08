@@ -10,7 +10,7 @@ import { useState } from "react";
 import { TbArrowBarRight } from "react-icons/tb";
 
 const Sidebar = ({ session }: { session: Session | undefined }) => {
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
   let user;
   if (session) {
     user = api.user.getById.useQuery({ id: session?.user.id }).data;
