@@ -2,5 +2,6 @@
   "typescript.format.enable": false,
   "javascript.format.enable": false,
   "prettier.jsxSingleQuote": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "on"
 }

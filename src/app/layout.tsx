@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
+import { getServerAuthSession } from "~/server/auth";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,11 +18,12 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerAuthSession();
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable} h-screen overflow-hidden`}>
@@ -29,7 +31,7 @@ export default function RootLayout({
           <main className="flex h-screen flex-col overflow-hidden">
             <Header />
             <div className="flex grow overflow-hidden">
-              <Sidebar />
+              <Sidebar session={session || undefined} />
               <div className="flex grow flex-col">{children}</div>
             </div>
           </main>
