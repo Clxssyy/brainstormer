@@ -9,7 +9,9 @@ interface SidebarDropdownProps {
 const SidebarDropdown = ({ title, children, hidden }: SidebarDropdownProps) => {
   return (
     <div className="flex flex-col">
-      <header className="mx-4 flex h-8 place-items-center">
+      <header
+        className={`mx-2 flex h-8 place-items-center ${hidden ? "justify-center" : ""}`}
+      >
         {
           {
             following: (

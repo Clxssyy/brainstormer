@@ -18,10 +18,10 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
 
   return (
     <nav
-      className={`hidden-scroll hidden overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14" : "w-1/4 lg:w-1/6"}`}
+      className={`hidden-scroll hidden overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14 min-w-14" : "w-1/3 lg:w-1/4"}`}
     >
       <header
-        className={`mx-4 flex h-10 place-items-center ${hidden ? "justify-center" : "justify-between"}`}
+        className={`mx-2 flex h-10 place-items-center ${hidden ? "justify-center" : "justify-between"}`}
       >
         {hidden ? null : (
           <h1 className="text-nowrap text-2xl font-bold">For You</h1>
@@ -44,9 +44,9 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               <Link
                 key={post.id}
                 href={`/post/${String(post.id)}`}
-                className={`flex px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                className={`flex px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex w-full place-items-center gap-2">
+                <div className="flex w-full place-items-center justify-center gap-2">
                   <FaBrain
                     className={`h-6 min-w-6 ${post.published ? "text-pink-500" : "text-neutral-500"}`}
                   />
@@ -59,10 +59,10 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               </Link>
             );
           })}
-          <div className="px-2">
+          <div className="mx-2">
             <Link
               href={session ? "/create" : "/api/auth/signin"}
-              className="flex place-items-center justify-center rounded-full bg-white/[1%] p-1 hover:bg-white/5"
+              className="flex place-items-center justify-center rounded-full bg-white/[1%] px-2 py-1 hover:bg-white/5"
             >
               <FaPlus className="h-3 w-3 text-neutral-500" />
             </Link>
@@ -74,9 +74,9 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               <Link
                 key={follow.follows.id}
                 href={`/user/${follow.follows.name}`}
-                className={`flex px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                className={`flex px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex w-full place-items-center gap-2">
+                <div className="flex w-full place-items-center justify-center gap-2">
                   <Image
                     src={follow.follows.image ?? "/default-avatar.png"}
                     alt={follow.follows.name ?? "User"}
