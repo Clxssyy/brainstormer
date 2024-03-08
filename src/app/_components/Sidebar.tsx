@@ -61,7 +61,7 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               </Link>
             );
           })}
-          <div className="p-2">
+          <div className="px-2">
             <Link
               href={session ? "/create" : "/api/auth/signin"}
               className="flex place-items-center justify-center rounded-full bg-white/[1%] p-1 hover:bg-white/5"

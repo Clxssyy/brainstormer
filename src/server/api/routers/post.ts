@@ -61,11 +61,11 @@ export const postRouter = createTRPCRouter({
     )
     .query(async (opts) => {
       const { ctx, input } = opts;
-      const limit = input.limit ?? 10;
+      const limit = input.limit ?? 8;
       const cursor = input.cursor;
       const direction = input.direction;
       const page = await ctx.db.post.findMany({
-        orderBy: { createdAt: direction ?? "asc" },
+        orderBy: { id: direction ?? "desc" },
         take: limit + 1,
         skip: 0,
         cursor: cursor ? { id: cursor } : undefined,
@@ -77,7 +77,6 @@ export const postRouter = createTRPCRouter({
       if (hasMore) {
         const nextItem = items.shift();
         nextCursor = nextItem?.id;
-        console.log("nextCursor", nextCursor);
       }
 
       return {

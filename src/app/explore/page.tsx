@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
+import BrainstormCard from "../_components/BrainstormCard";
 
 const ExplorePage = () => {
-  const [direction, setDirection] = useState<"asc" | "desc">("asc");
+  const [direction, setDirection] = useState<"asc" | "desc">("desc");
   const postsQuery = api.post.getAll.useInfiniteQuery(
     {
-      direction: direction ?? undefined,
+      direction: direction,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -38,59 +38,47 @@ const ExplorePage = () => {
 
   useEffect(() => {
     const posts = postsQuery.data?.pages.map((page) => page.items).flat();
-    setPosts(posts);
-    console.log(posts);
-  }, [postsQuery.data?.pages, setPosts]);
+    setPosts(() => {
+      return [...(posts ?? [])].sort((a, b) => {
+        if (direction === "asc") {
+          return a.createdAt.getTime() - b.createdAt.getTime();
+        }
+        return b.createdAt.getTime() - a.createdAt.getTime();
+      });
+    });
+  }, [postsQuery.data?.pages, setPosts, direction]);
 
   return (
-    <div className="flex grow flex-col gap-2 bg-neutral-950 p-8 text-white">
-      <h1 className="text-4xl font-bold">Explore</h1>
-      <div>
-        <button
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage || !hasNextPage}
-        >
-          {isFetchingNextPage
-            ? "Loading more..."
-            : hasNextPage
-              ? "Load More"
-              : "Nothing more to load"}
-        </button>
+    <div className="custom-scroll flex grow flex-col gap-2 overflow-y-auto bg-neutral-950 p-8 text-white">
+      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
+        Explore
+      </h1>
+      <div className="flex justify-center">
         <select
           name="direction"
           id="direction"
-          defaultValue={"asc"}
-          className="text-black"
+          defaultValue={"desc"}
+          className="rounded border border-neutral-700 bg-neutral-900 p-2 text-white transition-colors hover:border-neutral-500 focus:border-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-opacity-50"
           onChange={(e) => setDirection(e.target.value as "asc" | "desc")}
         >
-          <option value="desc">Ascending</option>
-          <option value="asc">Descending</option>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
         </select>
       </div>
-      <div>
-        <div className="grid grid-cols-2 gap-2">
-          {posts?.map((post) => (
-            <div
-              key={post?.id}
-              className="flex flex-col border border-neutral-900 p-4"
-            >
-              <div className="flex justify-between">
-                <h2 className="text-2xl">{post?.name}</h2>
-                <p className="text-xs text-neutral-500">#{post?.id}</p>
-              </div>
-              <p>
-                By:{" "}
-                <Link
-                  href={`/user/${post.createdBy.name}`}
-                  className="text-amber-400"
-                >
-                  {post?.createdBy.name}
-                </Link>
-              </p>
-            </div>
-          ))}
-        </div>
+      <div className="grid gap-2 md:grid-cols-2">
+        {posts?.map((post) => <BrainstormCard post={post} key={post.id} />)}
       </div>
+      <button
+        onClick={() => fetchNextPage()}
+        disabled={isFetchingNextPage || !hasNextPage}
+        className="text-amber-400 transition-colors enabled:hover:text-amber-500 enabled:hover:underline disabled:cursor-not-allowed disabled:font-bold disabled:opacity-50"
+      >
+        {isFetchingNextPage
+          ? "Loading..."
+          : hasNextPage
+            ? "Load More"
+            : `Nothing more to load!`}
+      </button>
     </div>
   );
 };
