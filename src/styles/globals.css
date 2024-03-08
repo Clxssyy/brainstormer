@@ -28,3 +28,7 @@
     box-shadow: 0 0 5px 4px rgba(236, 72, 153);
   }
 }
+
+.hidden-scroll::-webkit-scrollbar {
+  display: none;
+}

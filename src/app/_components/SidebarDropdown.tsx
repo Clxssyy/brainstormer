@@ -9,14 +9,14 @@ interface SidebarDropdownProps {
 const SidebarDropdown = ({ title, children, hidden }: SidebarDropdownProps) => {
   return (
     <div className="flex flex-col">
-      <header className="mx-4 flex h-8 place-items-center overflow-hidden">
+      <header className="mx-4 flex h-8 place-items-center">
         {
           {
             following: (
-              <FaHeart className={`h-6 w-6 ${hidden ? "" : "hidden"}`} />
+              <FaHeart className={`h-6 min-w-6 ${hidden ? "" : "hidden"}`} />
             ),
             brainstorms: (
-              <FaBrain className={`h-6 w-6 ${hidden ? "" : "hidden"}`} />
+              <FaBrain className={`h-6 min-w-6 ${hidden ? "" : "hidden"}`} />
             ),
           }[title.toLowerCase()]
         }
