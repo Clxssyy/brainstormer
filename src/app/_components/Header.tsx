@@ -20,8 +20,9 @@ const Header = async () => {
         </div>
       </div>
       <nav className="hidden w-1/3 justify-center gap-4 font-semibold md:flex">
-        <Link href="/create">Create</Link>
+        {session ? <Link href="/create">Create</Link> : null}
         <Link href="/explore">Explore</Link>
+        {session ? <Link href="/following">Following</Link> : null}
       </nav>
       <div className="flex w-1/2 justify-end md:w-1/3">
         {session ? (
