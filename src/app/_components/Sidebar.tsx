@@ -20,7 +20,7 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
 
   return (
     <nav
-      className={`hidden overflow-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14" : "w-1/4"}`}
+      className={`hidden overflow-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14" : "w-1/4 lg:w-1/6"}`}
     >
       <header
         className={`mx-4 flex h-10 place-items-center ${hidden ? "justify-center" : "justify-between"}`}
@@ -39,52 +39,56 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
           )}
         </button>
       </header>
-      <SidebarDropdown title="Brainstorms" hidden={hidden}>
-        {user?.posts.map((post) => {
-          return (
-            <Link
-              key={post.id}
-              href={`/post/${String(post.id)}`}
-              className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
-            >
-              <div className="flex place-items-center gap-2">
-                <FaBrain className={`h-6 w-6 ${bool ? "text-pink-500" : ""}`} />
-                <p
-                  className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
-                >
-                  {post?.name}
-                </p>
-              </div>
-            </Link>
-          );
-        })}
-      </SidebarDropdown>
-      <SidebarDropdown title="Following" hidden={hidden}>
-        {user?.following.map((follow) => {
-          return (
-            <Link
-              key={follow.follows.id}
-              href={`/user/${follow.follows.name}`}
-              className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
-            >
-              <div className="flex place-items-center gap-2">
-                <Image
-                  src={follow.follows.image ?? "/default-avatar.png"}
-                  alt={follow.follows.name ?? "User"}
-                  width={128}
-                  height={128}
-                  className="h-6 w-6 rounded-full"
-                />
-                <p
-                  className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
-                >
-                  {follow?.follows.name}
-                </p>
-              </div>
-            </Link>
-          );
-        })}
-      </SidebarDropdown>
+      <section className="flex flex-col gap-2">
+        <SidebarDropdown title="Brainstorms" hidden={hidden}>
+          {user?.posts.map((post) => {
+            return (
+              <Link
+                key={post.id}
+                href={`/post/${String(post.id)}`}
+                className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+              >
+                <div className="flex place-items-center gap-2">
+                  <FaBrain
+                    className={`h-6 w-6 ${bool ? "text-pink-500" : ""}`}
+                  />
+                  <p
+                    className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
+                  >
+                    {post?.name}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </SidebarDropdown>
+        <SidebarDropdown title="Following" hidden={hidden}>
+          {user?.following.map((follow) => {
+            return (
+              <Link
+                key={follow.follows.id}
+                href={`/user/${follow.follows.name}`}
+                className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+              >
+                <div className="flex place-items-center gap-2">
+                  <Image
+                    src={follow.follows.image ?? "/default-avatar.png"}
+                    alt={follow.follows.name ?? "User"}
+                    width={128}
+                    height={128}
+                    className="h-6 w-6 rounded-full"
+                  />
+                  <p
+                    className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
+                  >
+                    {follow?.follows.name}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </SidebarDropdown>
+      </section>
     </nav>
   );
 };
