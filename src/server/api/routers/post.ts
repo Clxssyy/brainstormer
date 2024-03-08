@@ -8,7 +8,13 @@ import {
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ name: z.string().min(1) }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        description: z.string().nullish(),
+        published: z.boolean().nullish(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // simulate a slow db call
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -17,6 +23,8 @@ export const postRouter = createTRPCRouter({
         data: {
           name: input.name,
           createdBy: { connect: { id: ctx.session.user.id } },
+          description: input.description ?? "",
+          published: input.published ?? false,
         },
       });
     }),
@@ -32,10 +40,10 @@ export const postRouter = createTRPCRouter({
     }),
 
   getById: publicProcedure
-    .input(z.object({ id: z.string(), published: z.boolean().nullish() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.post.findUnique({
-        where: { id: Number(input.id), published: input.published ?? false },
+        where: { id: Number(input.id) },
         include: { createdBy: true },
       });
     }),
