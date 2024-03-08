@@ -4,7 +4,7 @@ import SidebarDropdown from "./SidebarDropdown";
 import { api } from "~/trpc/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBrain } from "react-icons/fa";
+import { FaBrain, FaPlus } from "react-icons/fa";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { TbArrowBarRight } from "react-icons/tb";
@@ -46,14 +46,14 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               <Link
                 key={post.id}
                 href={`/post/${String(post.id)}`}
-                className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                className={`flex px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex place-items-center gap-2">
+                <div className="flex w-full place-items-center gap-2">
                   <FaBrain
-                    className={`h-6 w-6 ${bool ? "text-pink-500" : ""}`}
+                    className={`h-6 min-w-6 ${bool ? "text-pink-500" : ""}`}
                   />
                   <p
-                    className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
+                    className={`grow truncate text-sm font-semibold ${hidden ? "hidden" : ""}`}
                   >
                     {post?.name}
                   </p>
@@ -61,6 +61,14 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               </Link>
             );
           })}
+          <div className="p-2">
+            <Link
+              href="/create"
+              className="flex place-items-center justify-center rounded-full bg-white/[1%] p-1 hover:bg-white/5"
+            >
+              <FaPlus className="h-3 w-3 text-neutral-500" />
+            </Link>
+          </div>
         </SidebarDropdown>
         <SidebarDropdown title="Following" hidden={hidden}>
           {user?.following.map((follow) => {
@@ -68,9 +76,9 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
               <Link
                 key={follow.follows.id}
                 href={`/user/${follow.follows.name}`}
-                className={`flex w-full px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                className={`flex px-4 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex place-items-center gap-2">
+                <div className="flex w-full place-items-center gap-2">
                   <Image
                     src={follow.follows.image ?? "/default-avatar.png"}
                     alt={follow.follows.name ?? "User"}
@@ -79,7 +87,7 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
                     className="h-6 w-6 rounded-full"
                   />
                   <p
-                    className={`text-sm font-semibold ${hidden ? "hidden" : ""}`}
+                    className={`grow truncate text-sm font-semibold ${hidden ? "hidden" : ""}`}
                   >
                     {follow?.follows.name}
                   </p>
