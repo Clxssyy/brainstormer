@@ -100,7 +100,7 @@ export const postRouter = createTRPCRouter({
       const limit = input.limit ?? 10;
       const cursor = input.cursor;
       const direction = input.direction;
-      const published = input.published ?? true;
+      const published = input.published ?? undefined;
       const page = await ctx.db.post.findMany({
         orderBy: { id: direction ?? "desc" },
         take: limit + 1,

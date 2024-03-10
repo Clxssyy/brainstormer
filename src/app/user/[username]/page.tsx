@@ -8,7 +8,7 @@ const userPage = async ({ params }: { params: { username: string } }) => {
   const session = await getServerAuthSession();
   const user = await api.user.getByName.query({ name: params.username });
 
-  let profile: boolean = false;
+  let published: boolean | undefined = undefined;
 
   if (!user) {
     return (
@@ -20,11 +20,12 @@ const userPage = async ({ params }: { params: { username: string } }) => {
     );
   }
 
-  if (session?.user?.name === user.name) profile = true;
+  if (session?.user?.name !== user.name) published = true;
 
   const posts = await api.post.getAllById.query({
-    published: !profile,
+    published: published,
     id: user.id,
+    direction: "asc",
   });
 
   return (
@@ -52,10 +53,10 @@ const userPage = async ({ params }: { params: { username: string } }) => {
           </div>
           <p className="text-center">Posts: {posts.items.length}</p>
         </div>
-        {profile ? null : <FollowButton user={user} session={session} />}
+        {published ? <FollowButton user={user} session={session} /> : null}
         <div>
           <h1 className="text-2xl font-bold">Posts</h1>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 md:grid-cols-2">
             {posts.items.map((post) => {
               return <BrainstormCard key={post.id} post={post} />;
             })}

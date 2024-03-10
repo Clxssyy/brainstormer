@@ -26,11 +26,18 @@ export const userRouter = createTRPCRouter({
       return ctx.db.user.findFirst({
         where: { id: input.id },
         include: {
-          posts: true,
+          posts: {
+            orderBy: { createdAt: "desc" },
+          },
           followers: true,
           following: {
             include: {
               follows: true,
+            },
+            orderBy: {
+              follows: {
+                name: "asc",
+              },
             },
           },
         },
