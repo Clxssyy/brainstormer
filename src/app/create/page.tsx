@@ -38,7 +38,15 @@ const CreatePage = () => {
             placeholder="description"
             className="input"
           />
-          <input type="checkbox" {...register("published")} className="input" />
+          <div>
+            <label htmlFor="publised">Public</label>
+            <input
+              type="checkbox"
+              id="published"
+              {...register("published")}
+              className="input"
+            />
+          </div>
           <button type="submit" className="btn btn-primary">
             {create.isLoading ? "Creating..." : "Create"}
           </button>

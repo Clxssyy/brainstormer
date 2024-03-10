@@ -18,7 +18,7 @@ const Sidebar = ({ session }: { session: Session | undefined }) => {
 
   return (
     <nav
-      className={`hidden-scroll hidden overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14 min-w-14" : "w-1/3 lg:w-1/4"}`}
+      className={`hidden-scroll hidden overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14 min-w-14" : "w-1/3 lg:w-1/5"}`}
     >
       <header
         className={`mx-2 flex h-10 place-items-center ${hidden ? "justify-center" : "justify-between"}`}
