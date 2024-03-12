@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import DeleteButton from "./_components/DeleteButton";
 
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
@@ -48,6 +49,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
                   {post?.name}
                 </h1>
+                <DeleteButton id={post.id} />
                 <p className="text-xs text-neutral-500">#{post.id}</p>
               </div>
               <div className="flex place-items-center justify-between">
