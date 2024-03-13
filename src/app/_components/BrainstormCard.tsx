@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const BrainstormCard = ({ post }: { post: any }) => {
   return (
-    <div className="rounded border border-neutral-900">
-      <div className="flex grow gap-2 p-4">
+    <div className="flex grow gap-2 rounded border border-neutral-800 bg-neutral-900 p-4">
+      <div className="min-w-fit">
         <Link href={`/post/${post.id}`}>
           <Image
             alt={post.createdById}
@@ -14,18 +15,25 @@ const BrainstormCard = ({ post }: { post: any }) => {
             className="aspect-square"
           />
         </Link>
-        <div className="flex grow flex-col justify-between">
-          <div>
+      </div>
+      <div className="flex grow flex-col overflow-hidden">
+        <div className="flex justify-between gap-2 overflow-hidden">
+          <div className="flex place-items-center gap-2 overflow-hidden">
+            {post.published ? (
+              <FaEye className="min-h-4 min-w-4" />
+            ) : (
+              <FaEyeSlash className="min-h-4 min-w-4" />
+            )}
             <Link
               href={`/post/${post.id}`}
-              className="text-2xl hover:underline hover:decoration-amber-400"
+              className="truncate text-lg hover:underline hover:decoration-amber-400"
             >
               {post.name}
             </Link>
-            <p className="text-xs text-neutral-500">
-              {String(post?.createdAt.toLocaleDateString())}
-            </p>
           </div>
+          <p className="text-xs text-neutral-500">#{post.id}</p>
+        </div>
+        <div className="flex place-items-center gap-4">
           <p>
             By:{" "}
             <Link
@@ -35,8 +43,10 @@ const BrainstormCard = ({ post }: { post: any }) => {
               {post.createdBy.name}
             </Link>
           </p>
+          <p className="text-xs text-neutral-500">
+            {String(post?.createdAt.toLocaleDateString())}
+          </p>
         </div>
-        <p className="text-xs text-neutral-500">#{post.id}</p>
       </div>
     </div>
   );
