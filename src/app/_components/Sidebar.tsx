@@ -1,100 +1,107 @@
 "use client";
 
-import SidebarDropdown from "./SidebarDropdown";
-import { api } from "~/trpc/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaBrain, FaPlus } from "react-icons/fa";
-import { Session } from "next-auth";
-import { useState } from "react";
+import { FaBrain, FaHeart, FaPlus } from "react-icons/fa";
 import { TbArrowBarRight } from "react-icons/tb";
+import type { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "~/server/api/root";
+import { useState } from "react";
 
-const Sidebar = ({ session }: { session: Session | undefined }) => {
-  const [hidden, setHidden] = useState(true);
-  let user;
-  if (session) {
-    user = api.user.getById.useQuery({ id: session?.user.id }).data;
-  }
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type User = RouterOutput["user"]["getById"];
+
+interface SidebarProps {
+  user: User;
+}
+
+const Sidebar = ({ user }: SidebarProps) => {
+  const [hidden, setHidden] = useState(false);
 
   return (
     <nav
-      className={`hidden-scroll hidden overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all duration-200 md:block ${hidden ? "w-14 min-w-14" : "w-1/3 lg:w-1/5"}`}
+      className={`custom-scroll flex flex-col gap-2 overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all ${hidden ? "w-16 place-items-center" : "w-64"}`}
     >
-      <header
-        className={`mx-2 flex h-10 place-items-center ${hidden ? "justify-center" : "justify-between"}`}
-      >
-        {hidden ? null : (
-          <h1 className="text-nowrap text-2xl font-bold">For You</h1>
-        )}
-        <button
-          onClick={() => setHidden(!hidden)}
-          className="rounded p-1 hover:bg-white/5"
+      <div className="mx-2 flex min-h-10 place-items-center justify-between">
+        <h1
+          className={`text-nowrap text-2xl font-bold ${hidden ? "hidden" : ""}`}
         >
-          {hidden ? (
-            <TbArrowBarRight className="h-6 w-6 rotate-0 transition-all duration-200" />
-          ) : (
-            <TbArrowBarRight className="h-6 w-6 -rotate-180 transition-all duration-200" />
-          )}
+          For You
+        </h1>
+        <button onClick={() => setHidden(!hidden)}>
+          <TbArrowBarRight
+            className={`h-6 w-6 transition-all ${hidden ? "rotate-0" : "rotate-180"}`}
+          />
         </button>
-      </header>
-      <section className="flex flex-col gap-2">
-        <SidebarDropdown title="Brainstorms" hidden={hidden}>
-          {user?.posts.map((post) => {
-            return (
+      </div>
+      <div className="flex grow flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <div className="mx-2 h-6">
+            {hidden ? (
+              <FaBrain className="h-6 w-6" />
+            ) : (
+              <h2 className="text-xl font-semibold">Brainstorms</h2>
+            )}
+          </div>
+          <div className="flex grow flex-col">
+            {user?.posts.map((post) => (
               <Link
                 key={post.id}
-                href={`/post/${String(post.id)}`}
-                className={`flex px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                href={`/post/${post.id}`}
+                className={`px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex w-full place-items-center justify-center gap-2">
+                <div className="flex gap-2">
                   <FaBrain
-                    className={`h-6 min-w-6 ${post.published ? "text-pink-500" : "text-neutral-500"}`}
+                    className={`min-h-6 min-w-6 ${post.published ? "text-pink-500" : "text-neutral-700"}`}
                   />
-                  <p
-                    className={`grow truncate text-sm font-semibold ${hidden ? "hidden" : ""}`}
-                  >
-                    {post?.name}
-                  </p>
+                  <h3 className={`truncate ${hidden ? "hidden" : ""}`}>
+                    {post.name}
+                  </h3>
                 </div>
               </Link>
-            );
-          })}
-          <div className="mx-2">
+            ))}
+          </div>
+          <div>
             <Link
-              href={session ? "/create" : "/api/auth/signin"}
-              className="flex place-items-center justify-center rounded-full bg-white/[1%] px-2 py-1 hover:bg-white/5"
+              href="/create"
+              className="mx-2 flex justify-center rounded-full bg-white/10 p-1 text-neutral-500 transition-all hover:bg-white/20 hover:text-white"
             >
-              <FaPlus className="h-3 w-3 text-neutral-500" />
+              <FaPlus className="h-4 w-4" />
             </Link>
           </div>
-        </SidebarDropdown>
-        <SidebarDropdown title="Following" hidden={hidden}>
-          {user?.following.map((follow) => {
-            return (
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="mx-2 h-6">
+            {hidden ? (
+              <FaHeart className="h-6 w-6" />
+            ) : (
+              <h2 className="text-xl font-semibold">Following</h2>
+            )}
+          </div>
+          <div className="flex grow flex-col">
+            {user?.following.map((follow) => (
               <Link
-                key={follow.follows.id}
+                key={follow.id}
                 href={`/user/${follow.follows.name}`}
-                className={`flex px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
+                className={`px-2 py-1 ${hidden ? "" : "hover:bg-white/5"}`}
               >
-                <div className="flex w-full place-items-center justify-center gap-2">
+                <div className="flex gap-2">
                   <Image
-                    src={follow.follows.image ?? "/default-avatar.png"}
-                    alt={follow.follows.name ?? "User"}
-                    width={128}
-                    height={128}
-                    className="h-6 w-6 rounded-full"
+                    src={follow.follows.image || "/default-avatar.jpg"}
+                    alt={follow.follows.name || follow.followsId}
+                    width={24}
+                    height={24}
+                    className="rounded-full"
                   />
-                  <p
-                    className={`grow truncate text-sm font-semibold ${hidden ? "hidden" : ""}`}
-                  >
-                    {follow?.follows.name}
-                  </p>
+                  <h3 className={`truncate ${hidden ? "hidden" : ""}`}>
+                    {follow.follows.name}
+                  </h3>
                 </div>
               </Link>
-            );
-          })}
-        </SidebarDropdown>
-      </section>
+            ))}
+          </div>
+        </div>
+      </div>
     </nav>
   );
 };

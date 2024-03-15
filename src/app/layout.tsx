@@ -6,6 +6,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
 import { getServerAuthSession } from "~/server/auth";
+import { api } from "~/trpc/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,6 +25,26 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerAuthSession();
+
+  if (!session) {
+    return (
+      <html lang="en">
+        <body
+          className={`font-sans ${inter.variable} h-screen overflow-hidden`}
+        >
+          <TRPCReactProvider>
+            <main className="flex h-screen flex-col overflow-hidden">
+              <Header />
+              <div className="flex grow flex-col">{children}</div>
+            </main>
+          </TRPCReactProvider>
+        </body>
+      </html>
+    );
+  }
+
+  const user = await api.user.getById.query({ id: session?.user?.id });
+
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable} h-screen overflow-hidden`}>
@@ -31,7 +52,7 @@ export default async function RootLayout({
           <main className="flex h-screen flex-col overflow-hidden">
             <Header />
             <div className="flex grow overflow-hidden">
-              <Sidebar session={session || undefined} />
+              <Sidebar user={user} />
               <div className="flex grow flex-col">{children}</div>
             </div>
           </main>
