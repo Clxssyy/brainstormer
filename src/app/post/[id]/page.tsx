@@ -66,8 +66,11 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
           <div className="flex grow divide-x-2 divide-neutral-900">
-            <div className="h-full w-1/2">side 1</div>
-            <div className="h-full w-1/2">side 2</div>
+            {post.pages.map((page) => (
+              <div key={page.id} className="p-4">
+                <p>{page.content}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

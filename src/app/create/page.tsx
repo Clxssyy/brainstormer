@@ -2,44 +2,21 @@
 
 import { api } from "~/trpc/react";
 import { useForm } from "react-hook-form";
-import OpenAI from "openai";
 import { useState } from "react";
 
 const CreatePage = () => {
   const [choices, setChoices] = useState<string[]>([]);
 
   const create = api.post.create.useMutation({
+    onSuccess: (data) => {
+      setChoices(data || []);
+    },
     onError: (err) => {
       console.error(err);
     },
   });
 
   const { register, handleSubmit, reset } = useForm();
-
-  const openai = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
-  });
-
-  async function handlePrompt(value: string) {
-    const completion = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a creative writer. When given a brief explanation of an idea, you should provide two possible next steps for the story to continue in. These next steps should be short and simple. Please put each next step on a new line. The format should be: <next step 1>\n<next step 2>",
-        },
-        { role: "user", content: value },
-      ],
-      model: "gpt-3.5-turbo",
-    });
-
-    const response = completion.choices[0]?.message.content;
-
-    response?.split("\n").forEach((message) => {
-      setChoices((choices) => [...choices, message]);
-    });
-  }
 
   return (
     <div className="flex grow justify-center bg-neutral-950 p-8">
@@ -49,21 +26,23 @@ const CreatePage = () => {
         </h1>
         <div className="flex h-full w-full divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
           {choices.map((choice, index) => (
-            <p key={index} className="w-1/2 p-4 text-white">
-              {choice}
-            </p>
+            <div className="w-1/2">
+              <button
+                key={index}
+                className="h-full w-full p-4 text-white hover:bg-white/5"
+              >
+                {choice}
+              </button>
+            </div>
           ))}
         </div>
         {choices.length < 2 ? (
           <form
             onSubmit={handleSubmit((values) => {
               create.mutate({
-                name: values.name,
-                description: values.description,
-                published: values.published,
+                prompt: values.name,
               });
               reset();
-              handlePrompt(values.name);
             })}
             className="w-full rounded border border-amber-400 bg-neutral-900"
           >

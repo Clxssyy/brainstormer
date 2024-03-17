@@ -5,28 +5,71 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const handlePrompt = async (prompt: string) => {
+  const completion = await openai.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a creative writer. When given a brief explanation of an idea, you should provide two possible next steps for the story to continue in. These next steps should be short and simple. Please put each next step on a new line. The format should be: <next step 1>\n<next step 2>",
+      },
+      { role: "user", content: prompt },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
+  const response = completion.choices[0]?.message.content;
+
+  return response?.split("\n");
+};
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        name: z.string().min(1),
-        description: z.string().nullish(),
-        published: z.boolean().nullish(),
+        prompt: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      return ctx.db.post.create({
-        data: {
-          name: input.name,
-          createdBy: { connect: { id: ctx.session.user.id } },
-          description: input.description ?? "",
-          published: input.published ?? false,
-        },
+      const userPostCount = await ctx.db.post.count({
+        where: { createdBy: { id: ctx.session.user.id } },
       });
+
+      return ctx.db.post
+        .create({
+          data: {
+            name: "Brainstorm #" + (userPostCount + 1),
+            createdBy: {
+              connect: { id: ctx.session.user.id },
+            },
+          },
+        })
+        .then((post) => {
+          return ctx.db.page.create({
+            data: {
+              content: input.prompt,
+              post: {
+                connect: { id: post.id },
+              },
+              number: 1,
+            },
+          });
+        })
+        .then(() => {
+          return handlePrompt(input.prompt);
+        });
+    }),
+
+  getChoices: protectedProcedure
+    .input(z.object({ prompt: z.string() }))
+    .query(async ({ input }) => {
+      return handlePrompt(input.prompt);
     }),
 
   getLatest: protectedProcedure
@@ -44,7 +87,12 @@ export const postRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return ctx.db.post.findUnique({
         where: { id: Number(input.id) },
-        include: { createdBy: true },
+        include: {
+          createdBy: true,
+          pages: {
+            orderBy: { createdAt: "asc" },
+          },
+        },
       });
     }),
 
@@ -134,6 +182,9 @@ export const postRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      await ctx.db.page.deleteMany({
+        where: { postId: input.id },
+      });
       return ctx.db.post.delete({
         where: { id: input.id },
       });

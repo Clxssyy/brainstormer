@@ -5,7 +5,12 @@ import { api } from "~/trpc/react";
 
 const DeleteButton = ({ id }: { id: number }) => {
   const router = useRouter();
-  const deletePost = api.post.delete.useMutation();
+  const deletePost = api.post.delete.useMutation({
+    onSuccess: () => {
+      router.push("/");
+      router.refresh();
+    },
+  });
 
   return (
     <button
@@ -13,8 +18,6 @@ const DeleteButton = ({ id }: { id: number }) => {
         deletePost.mutate({
           id,
         });
-
-        router.push("/");
       }}
     >
       Delete
