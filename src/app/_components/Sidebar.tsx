@@ -20,7 +20,7 @@ const Sidebar = ({ user }: SidebarProps) => {
 
   return (
     <nav
-      className={`custom-scroll flex flex-col gap-2 overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all ${hidden ? "w-16 place-items-center" : "w-64"}`}
+      className={`custom-scroll flex flex-col gap-2 overflow-y-auto overflow-x-hidden bg-neutral-900 text-white transition-all ${hidden ? "min-w-16 place-items-center" : "min-w-64"}`}
     >
       <div className="mx-2 flex min-h-10 place-items-center justify-between">
         <h1
