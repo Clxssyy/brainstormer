@@ -48,8 +48,7 @@ const BrainstormCard = ({ post }: { post: any }) => {
         </div>
         <div className="grow rounded bg-neutral-800 p-1 text-sm text-neutral-500">
           <p className="truncate">
-            {post.description ||
-              "No description providedasdssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss."}
+            {post.description || "No description provided."}
           </p>
         </div>
         <div className="flex place-items-center justify-between gap-2">
