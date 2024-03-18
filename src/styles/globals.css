@@ -36,3 +36,16 @@
 .input {
   @apply w-full rounded-lg bg-neutral-800 p-2 text-neutral-100;
 }
+
+.appear {
+  animation: appear 1s;
+}
+
+@keyframes appear {
+  0% {
+    scale: 0;
+  }
+  100% {
+    scale: 1;
+  }
+}

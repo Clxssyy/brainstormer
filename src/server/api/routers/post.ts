@@ -61,8 +61,21 @@ export const postRouter = createTRPCRouter({
             },
           });
         })
-        .then(() => {
-          return handlePrompt(input.prompt);
+        .then(async (page) => {
+          const choices = await handlePrompt(input.prompt);
+          const post = await ctx.db.post.findUnique({
+            where: { id: page.postId },
+            include: {
+              createdBy: true,
+              pages: true,
+              likes: true,
+              comments: true,
+            },
+          });
+          return {
+            choices: choices,
+            post: post,
+          };
         });
     }),
 
@@ -70,6 +83,33 @@ export const postRouter = createTRPCRouter({
     .input(z.object({ prompt: z.string() }))
     .query(async ({ input }) => {
       return handlePrompt(input.prompt);
+    }),
+
+  addPage: protectedProcedure
+    .input(
+      z.object({
+        postId: z.number(),
+        content: z.string(),
+        number: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.page
+        .create({
+          data: {
+            content: input.content,
+            post: {
+              connect: { id: input.postId },
+            },
+            number: input.number,
+          },
+        })
+        .then(async () => {
+          const choices = await handlePrompt(input.content);
+          return {
+            choices: choices,
+          };
+        });
     }),
 
   getLatest: protectedProcedure
@@ -92,6 +132,8 @@ export const postRouter = createTRPCRouter({
           pages: {
             orderBy: { createdAt: "asc" },
           },
+          likes: true,
+          comments: true,
         },
       });
     }),
@@ -116,7 +158,7 @@ export const postRouter = createTRPCRouter({
         take: limit + 1,
         skip: 0,
         cursor: cursor ? { id: cursor } : undefined,
-        include: { createdBy: true },
+        include: { createdBy: true, likes: true, comments: true },
         where: { published: published },
       });
       const items = page.reverse();

@@ -3,13 +3,30 @@
 import { api } from "~/trpc/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "~/server/api/root";
+
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type Post = RouterOutput["post"]["getById"];
 
 const CreatePage = () => {
   const [choices, setChoices] = useState<string[]>([]);
+  const [post, setPost] = useState<Post>(null);
+  const [pageCount, setPageCount] = useState(0);
 
   const create = api.post.create.useMutation({
-    onSuccess: (data) => {
-      setChoices(data || []);
+    onSuccess: async (data) => {
+      setChoices(data.choices || []);
+      setPost(data.post);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const addPage = api.post.addPage.useMutation({
+    onSuccess: async (data) => {
+      setChoices(data.choices || []);
     },
     onError: (err) => {
       console.error(err);
@@ -26,10 +43,18 @@ const CreatePage = () => {
         </h1>
         <div className="flex h-full w-full divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
           {choices.map((choice, index) => (
-            <div className="w-1/2">
+            <div className="w-1/2" key={choice + index}>
               <button
                 key={index}
-                className="h-full w-full p-4 text-white hover:bg-white/5"
+                className="appear h-full w-full p-4 text-white transition-all hover:bg-white/5"
+                onClick={() => {
+                  addPage.mutate({
+                    postId: post!.id,
+                    content: choice,
+                    number: pageCount + 1,
+                  });
+                  setPageCount(pageCount + 1);
+                }}
               >
                 {choice}
               </button>
@@ -42,6 +67,7 @@ const CreatePage = () => {
               create.mutate({
                 prompt: values.name,
               });
+              setPageCount(pageCount + 1);
               reset();
             })}
             className="w-full rounded border border-amber-400 bg-neutral-900"

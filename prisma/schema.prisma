@@ -43,7 +43,7 @@ model Page {
     postId    Int
 
     @@index([postId])
-    @@unique([postId, number])
+    @@unique([postId, number], name: "unique_page_number")
 }
 
 model Like {
