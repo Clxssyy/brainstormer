@@ -42,24 +42,26 @@ const CreatePage = () => {
           What are you brainstorming?
         </h1>
         <div className="flex h-full w-full divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
-          {choices.map((choice, index) => (
-            <div className="w-1/2" key={choice + index}>
-              <button
-                key={index}
-                className="appear h-full w-full p-4 text-white transition-all hover:bg-white/5"
-                onClick={() => {
-                  addPage.mutate({
-                    postId: post!.id,
-                    content: choice,
-                    number: pageCount + 1,
-                  });
-                  setPageCount(pageCount + 1);
-                }}
-              >
-                {choice}
-              </button>
-            </div>
-          ))}
+          {choices
+            .filter((choice) => choice != "")
+            .map((choice, index) => (
+              <div className="w-1/2" key={choice + index}>
+                <button
+                  key={index}
+                  className="appear h-full w-full p-4 text-white transition-all hover:bg-white/5"
+                  onClick={() => {
+                    addPage.mutate({
+                      postId: post!.id,
+                      content: choice,
+                      number: pageCount + 1,
+                    });
+                    setPageCount(pageCount + 1);
+                  }}
+                >
+                  {choice}
+                </button>
+              </div>
+            ))}
         </div>
         {choices.length < 2 ? (
           <form
