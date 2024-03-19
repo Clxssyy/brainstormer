@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import DeleteButton from "./_components/DeleteButton";
+import LikeButton from "./_components/LikeButton";
+import CommentButton from "./_components/CommentButton";
 
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
@@ -32,7 +34,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex grow flex-col bg-neutral-950 text-white">
+    <div className="custom-scroll flex grow flex-col overflow-y-scroll bg-neutral-950 text-white">
       <div className="grow p-8">
         <div className="flex h-full grow flex-col rounded border border-neutral-900">
           <div className="flex gap-4 bg-neutral-900 p-4">
@@ -49,7 +51,6 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
                   {post?.name}
                 </h1>
-                <DeleteButton id={post.id} />
                 <p className="text-xs text-neutral-500">#{post.id}</p>
               </div>
               <div className="flex place-items-center justify-between">
@@ -59,9 +60,6 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 >
                   {post.createdBy.name}
                 </Link>
-                <p className="text-xs text-neutral-500">
-                  {String(post?.createdAt.toLocaleDateString())}
-                </p>
               </div>
             </div>
           </div>
@@ -72,7 +70,18 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
               </div>
             ))}
           </div>
+          <div className="flex place-items-center gap-2 bg-neutral-800 p-2">
+            <LikeButton post={post} session={session} />
+            <CommentButton post={post} session={session} />
+            <DeleteButton post={post} session={session} />
+            <p className="text-xs text-neutral-500">
+              {String(post?.createdAt.toLocaleDateString())}
+            </p>
+          </div>
         </div>
+        {post.comments.map((comment) => (
+          <p>{comment.content}</p>
+        ))}
       </div>
     </div>
   );

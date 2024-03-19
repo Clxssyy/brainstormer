@@ -251,4 +251,51 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+
+  like: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.like.create({
+        data: {
+          post: {
+            connect: { id: input.id },
+          },
+          user: {
+            connect: { id: ctx.session.user.id },
+          },
+        },
+      });
+    }),
+
+  unlike: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.like.deleteMany({
+        where: {
+          postId: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+
+  comment: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        content: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.comment.create({
+        data: {
+          content: input.content,
+          post: {
+            connect: { id: input.id },
+          },
+          user: {
+            connect: { id: ctx.session.user.id },
+          },
+        },
+      });
+    }),
 });
