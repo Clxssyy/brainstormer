@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaRegComment } from "react-icons/fa";
 import { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
+import { useState } from "react";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -17,25 +18,35 @@ const CommentButton = ({
   post: Post;
   session: Session | null;
 }) => {
+  const [comment, setComment] = useState<string>("");
+  const [hidden, setHidden] = useState<boolean>(true);
   const router = useRouter();
-  const comment = api.post.comment.useMutation({
+  const commentSetter = api.post.comment.useMutation({
     onSuccess: () => {
       router.refresh();
     },
   });
 
   return (
-    <div className="flex place-items-center gap-1">
+    <div className="flex place-items-center gap-1 relative">
       <button
-        onClick={() =>
-          comment.mutate({
+        onClick={() => {
+          if (hidden) {
+            setHidden(false);
+            return;
+          }
+
+          commentSetter.mutate({
             id: post!.id,
-            content: "Hello, World!",
-          })
-        }
+            content: comment,
+          });
+          setComment("");
+          setHidden(true);
+        }}
       >
         <FaRegComment />
       </button>
+      <input onChange={(e) => setComment(e.target.value)} type="text" value={comment} className={`text-black absolute top-6 ${hidden ? "hidden" : ""}`} />
       <span>{post!.comments.length}</span>
     </div>
   );

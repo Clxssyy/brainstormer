@@ -70,18 +70,25 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
               </div>
             ))}
           </div>
-          <div className="flex place-items-center gap-2 bg-neutral-800 p-2">
-            <LikeButton post={post} session={session} />
-            <CommentButton post={post} session={session} />
-            <DeleteButton post={post} session={session} />
+          <div className="flex place-items-center justify-between bg-neutral-800 p-2">
+            <div className="flex gap-2">
+              <LikeButton post={post} session={session} />
+              <CommentButton post={post} session={session} />
+              <DeleteButton post={post} session={session} />
+            </div>
             <p className="text-xs text-neutral-500">
               {String(post?.createdAt.toLocaleDateString())}
             </p>
           </div>
         </div>
-        {post.comments.map((comment) => (
-          <p>{comment.content}</p>
-        ))}
+        <div>
+          <h2>Comments</h2>
+          <div>
+            {post.comments.map((comment) => (
+            <p>{comment.content}</p>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
