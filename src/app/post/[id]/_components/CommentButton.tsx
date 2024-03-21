@@ -28,11 +28,16 @@ const CommentButton = ({
   });
 
   return (
-    <div className="flex place-items-center gap-1 relative">
+    <div className="relative flex place-items-center gap-1">
       <button
         onClick={() => {
           if (hidden) {
             setHidden(false);
+            return;
+          }
+
+          if (comment === "") {
+            setHidden(true);
             return;
           }
 
@@ -46,7 +51,12 @@ const CommentButton = ({
       >
         <FaRegComment />
       </button>
-      <input onChange={(e) => setComment(e.target.value)} type="text" value={comment} className={`text-black absolute top-6 ${hidden ? "hidden" : ""}`} />
+      <input
+        onChange={(e) => setComment(e.target.value)}
+        type="text"
+        value={comment}
+        className={`absolute top-6 text-black ${hidden ? "hidden" : ""}`}
+      />
       <span>{post!.comments.length}</span>
     </div>
   );
