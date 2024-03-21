@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 import DeleteButton from "./_components/DeleteButton";
 import LikeButton from "./_components/LikeButton";
 import CommentButton from "./_components/CommentButton";
+import CommentCard from "./_components/CommentCard";
 
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
@@ -12,6 +13,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
   const post = await api.post.getById.query({
     id: params.id,
   });
+
+  const isUsersPost = post?.createdById === session?.user.id;
 
   if (!post) {
     return (
@@ -74,7 +77,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             <div className="flex gap-2">
               <LikeButton post={post} session={session} />
               <CommentButton post={post} session={session} />
-              <DeleteButton post={post} session={session} />
+              {isUsersPost && <DeleteButton post={post} session={session} />}
             </div>
             <p className="text-xs text-neutral-500">
               {String(post?.createdAt.toLocaleDateString())}
@@ -85,7 +88,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
           <h2>Comments</h2>
           <div>
             {post.comments.map((comment) => (
-            <p>{comment.content}</p>
+              <CommentCard key={comment.id} comment={comment} />
             ))}
           </div>
         </div>

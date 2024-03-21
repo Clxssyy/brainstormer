@@ -227,6 +227,12 @@ export const postRouter = createTRPCRouter({
       await ctx.db.page.deleteMany({
         where: { postId: input.id },
       });
+      await ctx.db.like.deleteMany({
+        where: { postId: input.id },
+      });
+      await ctx.db.comment.deleteMany({
+        where: { postId: input.id },
+      });
       return ctx.db.post.delete({
         where: { id: input.id },
       });
@@ -236,7 +242,7 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        name: z.string().min(1),
+        name: z.string().min(1).nullish(),
         description: z.string().nullish(),
         published: z.boolean().nullish(),
       }),
@@ -245,8 +251,8 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.update({
         where: { id: Number(input.id) },
         data: {
-          name: input.name,
-          description: input.description ?? "",
+          name: input.name ?? undefined,
+          description: input.description ?? undefined,
           published: input.published ?? false,
         },
       });
