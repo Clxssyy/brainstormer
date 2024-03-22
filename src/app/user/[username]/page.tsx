@@ -51,7 +51,13 @@ const userPage = async ({ params }: { params: { username: string } }) => {
             <p>Followers: {user.followers.length}</p>
             <p>Following: {user.following.length}</p>
           </div>
-          <p className="text-center">Posts: {posts.items.length}</p>
+          <div className="flex justify-center gap-4">
+            <p>Posts: {posts.items.length}</p>
+            <p>
+              Likes:{" "}
+              {posts.items.reduce((acc, post) => acc + post.likes.length, 0)}
+            </p>
+          </div>
         </div>
         {published ? <FollowButton user={user} session={session} /> : null}
         <div>
