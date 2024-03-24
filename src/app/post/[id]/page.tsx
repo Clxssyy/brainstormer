@@ -85,11 +85,15 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
           </div>
         </div>
         <div>
-          <h2>Comments</h2>
+          <h2 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
+            Comments
+          </h2>
           <div>
-            {post.comments.map((comment) => (
-              <CommentCard key={comment.id} comment={comment} />
-            ))}
+            {post.comments.length === 0
+              ? "Be the first to comment!"
+              : post.comments.map((comment) => (
+                  <CommentCard key={comment.id} comment={comment} />
+                ))}
           </div>
         </div>
       </div>
