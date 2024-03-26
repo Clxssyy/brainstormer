@@ -30,6 +30,20 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
       >
         {postQuery.data?.published ? "Private" : "Publish"}
       </button>
+      <input
+        type="text"
+        value={postQuery.data?.description}
+        className="text-black"
+      />
+      <input
+        type="text"
+        value={postQuery.data?.name}
+        className="text-black"
+      />
+      <p>Pages: {postQuery.data?.pages.length}</p>
+      {postQuery.data?.pages.map((page) => {
+        return <p>{page.content}</p>
+      })}
     </div>
   );
 };
