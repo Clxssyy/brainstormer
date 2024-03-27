@@ -35,14 +35,15 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
         value={postQuery.data?.description}
         className="text-black"
       />
-      <input
-        type="text"
-        value={postQuery.data?.name}
-        className="text-black"
-      />
+      <input type="text" value={postQuery.data?.name} className="text-black" />
       <p>Pages: {postQuery.data?.pages.length}</p>
-      {postQuery.data?.pages.map((page) => {
-        return <p>{page.content}</p>
+      {postQuery.data?.pages.map((page, index) => {
+        return (
+          <div className="flex flex-col">
+            <p>Page #{index + 1}</p>
+            <p>{page.content}</p>
+          </div>
+        )
       })}
     </div>
   );
