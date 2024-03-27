@@ -21,6 +21,7 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
     <div className="grow bg-neutral-900 text-white">
       <h1 className="text-2xl">Edit Post #{params.id}</h1>
       <button
+        className="p-2 bg-white/5 rounded-full"
         onClick={() => {
           postUpdater.mutate({
             id: params.id,
