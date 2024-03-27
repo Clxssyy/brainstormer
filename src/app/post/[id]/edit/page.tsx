@@ -4,6 +4,7 @@ import { inferRouterOutputs } from "@trpc/server";
 import { useRouter } from "next/navigation";
 import { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
+import { FaLock, FaLockOpen } from "react-icons/fa6"
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -18,8 +19,11 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
     },
   });
   return (
-    <div className="grow bg-neutral-900 text-white">
-      <h1 className="text-2xl">Edit Post #{params.id}</h1>
+    <div className="grow bg-neutral-950 text-white p-8">
+      <h1 className="text-3xl text-transparent text-center font-bold to-neutral-400 from-white bg-gradient-to-b bg-clip-text">
+        Edit Studio
+      </h1>
+      <p>Post #{params.id}</p>
       <button
         className="p-2 bg-white/5 rounded-full"
         onClick={() => {
@@ -29,7 +33,7 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
           });
         }}
       >
-        {postQuery.data?.published ? "Private" : "Publish"}
+        {postQuery.data?.published ? <FaLock /> : <FaLockOpen />}
       </button>
       <input
         type="text"
