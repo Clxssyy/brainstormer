@@ -24,23 +24,26 @@ const PostEditPage = ({ params }: { params: { id: string }; post: Post }) => {
         Edit Studio
       </h1>
       <p>Post #{params.id}</p>
-      <button
-        className="p-2 bg-white/5 rounded-full"
-        onClick={() => {
-          postUpdater.mutate({
-            id: params.id,
-            published: !postQuery.data?.published,
-          });
-        }}
-      >
-        {postQuery.data?.published ? <FaLock /> : <FaLockOpen />}
-      </button>
-      <input
-        type="text"
-        value={postQuery.data?.description}
-        className="text-black"
-      />
-      <input type="text" value={postQuery.data?.name} className="text-black" />
+      <div className="flex gap-2">
+        <button
+          className="p-2 bg-white/5 rounded-full"
+          onClick={() => {
+            postUpdater.mutate({
+              id: params.id,
+              published: !postQuery.data?.published,
+            });
+          }}
+        >
+          {postQuery.data?.published ? <FaLock /> : <FaLockOpen />}
+        </button>
+        <input type="text" value={postQuery.data?.name} className="bg-neutral-800 p-2 rounded" />
+        <input
+          type="text"
+          value={postQuery.data?.description}
+          className="bg-neutral-800 p-2 rounded"
+          placeholder="Description"
+        />
+      </div>
       <p>Pages: {postQuery.data?.pages.length}</p>
       {postQuery.data?.pages.map((page, index) => {
         return (
