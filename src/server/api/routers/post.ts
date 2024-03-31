@@ -253,7 +253,7 @@ export const postRouter = createTRPCRouter({
         data: {
           name: input.name ?? undefined,
           description: input.description ?? undefined,
-          published: input.published ?? false,
+          published: input.published ?? undefined,
         },
       });
     }),
