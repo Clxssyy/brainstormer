@@ -49,7 +49,7 @@ const EditStudio = ({ id, post }: { id: string, post: Post }) => {
       <p>Pages: {post.pages.length}</p>
       {post.pages.map((page, index) => {
         return (
-          <div className="flex flex-col">
+          <div key={index} className="flex flex-col">
             <p>Page #{index + 1}</p>
             <p>{page.content}</p>
           </div>
