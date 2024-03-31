@@ -3,9 +3,17 @@ import Link from "next/link";
 import { FaComment, FaEyeSlash, FaHeart } from "react-icons/fa";
 
 const BrainstormCard = ({ post }: { post: any }) => {
+  const currentDate = new Date();
+  const postDate = new Date(post.createdAt);
+
+  const isHot = post.likes.length > 1;
+
+  const isNew =
+    currentDate.getTime() - postDate.getTime() < 1000 * 60 * 60 * 24;
+
   return (
     <div className="flex grow gap-2 rounded border border-neutral-800 bg-neutral-900 p-2">
-      <div className="relative min-w-fit">
+      <div className="relative relative min-w-fit">
         {post.published ? null : (
           <div className="absolute flex h-full w-full place-items-center justify-center">
             <FaEyeSlash className="h-10 w-10 text-amber-400/50" />
@@ -19,6 +27,15 @@ const BrainstormCard = ({ post }: { post: any }) => {
             height={128}
             className="aspect-square rounded"
           />
+          {isHot ? (
+            <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
+              🔥
+            </p>
+          ) : isNew ? (
+            <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
+              New!
+            </p>
+          ) : undefined}
         </Link>
       </div>
       <div className="flex grow flex-col gap-2 overflow-hidden">
