@@ -35,7 +35,7 @@ const BrainstormCard = ({ post }: { post: any }) => {
             <p className="text-xs text-neutral-500">#{post.id}</p>
           </div>
           <div className="flex place-items-center gap-4 text-xs">
-            <p>
+            <p className="text-white">
               By:{" "}
               <Link
                 href={`/user/${post.createdBy.name}`}
