@@ -27,7 +27,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
   const [description, setDescription] = useState(post!.description || "");
 
   return (
-    <div className="grow bg-neutral-950 p-8 text-white">
+    <div className="grow bg-neutral-950 p-8 text-white overflow-y-auto">
       <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent">
         Edit Studio
       </h1>

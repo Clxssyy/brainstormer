@@ -68,8 +68,9 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
           </div>
           <div className="flex grow divide-x-2 divide-neutral-900">
             {post.pages.map((page) => (
-              <div key={page.id} className="p-4">
+              <div key={page.id} className="p-4 flex flex-col">
                 <p>{page.content}</p>
+                {page.image ? <Image src={page.image} width={100} height={100} alt="image" /> : undefined}
               </div>
             ))}
           </div>
@@ -92,8 +93,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             {post.comments.length === 0
               ? "Be the first to comment!"
               : post.comments.map((comment) => (
-                  <CommentCard key={comment.id} comment={comment} />
-                ))}
+                <CommentCard key={comment.id} comment={comment} />
+              ))}
           </div>
         </div>
       </div>
