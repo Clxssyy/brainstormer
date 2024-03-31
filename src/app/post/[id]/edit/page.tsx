@@ -16,7 +16,7 @@ const EditPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="flex grow">
-      <EditStudio id={params.id} />
+      <EditStudio id={params.id} post={post} />
     </div>
   );
 };

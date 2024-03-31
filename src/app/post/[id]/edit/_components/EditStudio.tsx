@@ -9,13 +9,11 @@ import { FaLock, FaLockOpen } from "react-icons/fa6";
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
 
-const EditStudio = ({ id }: { id: string }) => {
+const EditStudio = ({ id, post }: { id: string, post: Post }) => {
   const router = useRouter();
-  const postQuery = api.post.getById.useQuery({ id: id });
   const postUpdater = api.post.update.useMutation({
     onSuccess: () => {
       router.refresh();
-      postQuery.refetch();
     },
   });
   return (
@@ -30,26 +28,26 @@ const EditStudio = ({ id }: { id: string }) => {
           onClick={() => {
             postUpdater.mutate({
               id: id,
-              published: !postQuery.data?.published,
+              published: !post.published,
             });
           }}
         >
-          {postQuery.data?.published ? <FaLock /> : <FaLockOpen />}
+          {post.published ? <FaLock /> : <FaLockOpen />}
         </button>
         <input
           type="text"
-          value={postQuery.data?.name}
+          value={post.name}
           className="rounded bg-neutral-800 p-2"
         />
         <input
           type="text"
-          value={postQuery.data?.description}
+          value={post.description}
           className="rounded bg-neutral-800 p-2"
           placeholder="Description"
         />
       </div>
-      <p>Pages: {postQuery.data?.pages.length}</p>
-      {postQuery.data?.pages.map((page, index) => {
+      <p>Pages: {post.pages.length}</p>
+      {post.pages.map((page, index) => {
         return (
           <div className="flex flex-col">
             <p>Page #{index + 1}</p>
