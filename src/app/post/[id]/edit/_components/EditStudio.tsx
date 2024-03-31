@@ -6,7 +6,7 @@ import { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { useState } from "react";
-import { set } from "zod";
+import Image from "next/image";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -14,6 +14,11 @@ type Post = RouterOutput["post"]["getById"];
 const EditStudio = ({ id, post }: { id: string; post: Post }) => {
   const router = useRouter();
   const postUpdater = api.post.update.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+  const pageUpdater = api.post.updatePage.useMutation({
     onSuccess: () => {
       router.refresh();
     },
@@ -71,11 +76,21 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
         return (
           <div key={index} className="flex flex-col">
             <p>Page #{index + 1}</p>
-            <p>{page.content}</p>
+            <div className="flex gap-2 place-items-center">
+              <p>{page.content}</p>
+              <button
+                className="bg-neutral-800 rounded p-2"
+                onClick={() => pageUpdater.mutate({
+                  id: page.id,
+                  image: "/default-avatar.jpg",
+                })}
+              > Generate Image</button>
+            </div>
+            {page.image ? <Image src={page.image} width={100} height={100} alt="image" /> : undefined}
           </div>
         );
       })}
-    </div>
+    </div >
   );
 };
 

@@ -304,4 +304,22 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+
+  updatePage: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        image: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.page.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          image: input.image,
+        }
+      });
+    }),
 });
