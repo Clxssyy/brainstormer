@@ -7,6 +7,7 @@ import { api } from "~/trpc/react";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { useState } from "react";
 import Image from "next/image";
+import DeleteButton from "../../_components/DeleteButton";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -32,6 +33,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
         Edit Studio
       </h1>
       <p>Post #{id}</p>
+      <DeleteButton post={post} />
       <div className="flex gap-2">
         <button
           className="rounded-full bg-white/5 p-2"

@@ -67,8 +67,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
           <div className="flex grow divide-x-2 divide-neutral-900">
-            {post.pages.map((page) => (
-              <div key={page.id} className="p-4 flex flex-col">
+            {post.pages.filter((page) => page.number < 3).map((page) => (
+              <div key={page.id} className="p-4 flex flex-col w-1/2">
                 <p>{page.content}</p>
                 {page.image ? <Image src={page.image} width={100} height={100} alt="image" /> : undefined}
               </div>
@@ -78,7 +78,6 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             <div className="flex gap-2">
               <LikeButton post={post} session={session} />
               <CommentButton post={post} session={session} />
-              {isUsersPost && <DeleteButton post={post} session={session} />}
             </div>
             <p className="text-xs text-neutral-500">
               {String(post?.createdAt.toLocaleDateString())}
