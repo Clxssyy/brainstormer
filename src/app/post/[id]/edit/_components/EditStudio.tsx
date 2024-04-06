@@ -7,7 +7,7 @@ import { api } from "~/trpc/react";
 import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { useState } from "react";
 import Image from "next/image";
-import DeleteButton from "../../_components/DeleteButton";
+import { FaTrash } from "react-icons/fa";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -24,19 +24,34 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
       router.refresh();
     },
   });
+  const deletePost = api.post.delete.useMutation({
+    onSuccess: () => {
+      router.push("/");
+      router.refresh();
+    },
+  });
+
   const [name, setName] = useState(post!.name);
   const [description, setDescription] = useState(post!.description || "");
 
   return (
     <div className="grow bg-neutral-950 p-8 text-white overflow-y-auto">
       <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent">
-        Edit Studio
+        Edit Studio - #{id}
       </h1>
-      <p>Post #{id}</p>
-      <DeleteButton post={post} />
       <div className="flex gap-2">
         <button
-          className="rounded-full bg-white/5 p-2"
+          className="rounded-full bg-white/5 p-2 hover:text-red-400"
+          onClick={() => {
+            deletePost.mutate({
+              id: post!.id,
+            });
+          }}
+        >
+          <FaTrash />
+        </button>
+        <button
+          className="rounded-full bg-white/5 p-2 hover:text-pink-500"
           onClick={() => {
             postUpdater.mutate({
               id: id,
@@ -46,6 +61,8 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
         >
           {post!.published ? <FaLock /> : <FaLockOpen />}
         </button>
+      </div>
+      <div className="flex gap-2">
         <input
           type="text"
           value={name}
