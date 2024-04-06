@@ -41,15 +41,16 @@ const CreatePage = () => {
         <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
           What are you brainstorming?
         </h1>
-        <div className="flex h-full w-full divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
+        <div className="flex grow w-full divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
           {choices
-            .filter((choice) => choice != "")
+            .filter((choice) => !['', 'OR', 'or'].includes(choice))
             .map((choice, index) => (
               <div className="w-1/2" key={choice + index}>
                 <button
                   key={index}
                   className="appear h-full w-full p-4 text-white transition-all hover:bg-white/5"
                   onClick={() => {
+                    if (addPage.isLoading) return
                     addPage.mutate({
                       postId: post!.id,
                       content: choice,
@@ -75,12 +76,13 @@ const CreatePage = () => {
             className="w-full rounded border border-amber-400 bg-neutral-900"
           >
             <div className="flex h-full">
-              <textarea
+              <input
+                type="text"
                 {...register("name")}
                 placeholder="What are you thinking..."
-                className="max-h-[10em] min-h-full grow overflow-y-auto bg-transparent p-4 text-white outline-none"
+                className="grow overflow-y-auto bg-transparent p-4 text-white outline-none"
                 required
-                rows={1}
+                disabled={create.isLoading}
               />
               <button
                 type="submit"
