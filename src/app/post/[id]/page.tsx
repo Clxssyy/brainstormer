@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import DeleteButton from "./_components/DeleteButton";
 import LikeButton from "./_components/LikeButton";
 import CommentButton from "./_components/CommentButton";
 import CommentCard from "./_components/CommentCard";
@@ -13,8 +12,6 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
   const post = await api.post.getById.query({
     id: params.id,
   });
-
-  const isUsersPost = post?.createdById === session?.user.id;
 
   if (!post) {
     return (
