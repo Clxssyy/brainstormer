@@ -34,9 +34,9 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="custom-scroll flex grow flex-col overflow-y-scroll bg-neutral-950 text-white">
-      <div className="grow p-8">
-        <div className="flex h-full grow flex-col rounded border border-neutral-900">
+    <div className="custom-scroll flex grow flex-col overflow-y-scroll bg-neutral-950 p-8 text-white">
+      <div className="grow space-y-4">
+        <div className="flex h-full flex-col rounded border border-neutral-900">
           <div className="flex gap-4 bg-neutral-900 p-4">
             <Image
               priority
@@ -64,17 +64,26 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
           <div className="flex grow divide-x-2 divide-neutral-900">
-            {post.pages.filter((page) => page.number < 3).map((page) => (
-              <div key={page.id} className="p-4 flex flex-col w-1/2">
-                <p>{page.content}</p>
-                {page.image ? <Image src={page.image} width={100} height={100} alt="image" /> : undefined}
-              </div>
-            ))}
+            {post.pages
+              .filter((page) => page.number < 3)
+              .map((page) => (
+                <div key={page.id} className="flex w-1/2 flex-col p-4">
+                  <p>{page.content}</p>
+                  {page.image ? (
+                    <Image
+                      src={page.image}
+                      width={100}
+                      height={100}
+                      alt="image"
+                    />
+                  ) : undefined}
+                </div>
+              ))}
           </div>
           <div className="flex place-items-center justify-between bg-neutral-800 p-2">
             <div className="flex gap-2">
               <LikeButton post={post} session={session} />
-              <CommentButton post={post} session={session} />
+              <CommentButton post={post} />
             </div>
             <p className="text-xs text-neutral-500">
               {String(post?.createdAt.toLocaleDateString())}
@@ -85,12 +94,12 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
           <h2 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
             Comments
           </h2>
-          <div>
+          <div className="pb-8">
             {post.comments.length === 0
               ? "Be the first to comment!"
               : post.comments.map((comment) => (
-                <CommentCard key={comment.id} comment={comment} />
-              ))}
+                  <CommentCard key={comment.id} comment={comment} />
+                ))}
           </div>
         </div>
       </div>
