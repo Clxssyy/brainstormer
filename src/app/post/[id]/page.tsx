@@ -68,15 +68,18 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
               .filter((page) => page.number < 3)
               .map((page) => (
                 <div key={page.id} className="flex w-1/2 flex-col p-4">
+                  <div className="flex justify-center">
+                    {page.image ? (
+                      <Image
+                        src={page.image}
+                        width={100}
+                        height={100}
+                        alt="image"
+                        className="aspect-square w-96 rounded"
+                      />
+                    ) : undefined}
+                  </div>
                   <p>{page.content}</p>
-                  {page.image ? (
-                    <Image
-                      src={page.image}
-                      width={100}
-                      height={100}
-                      alt="image"
-                    />
-                  ) : undefined}
                 </div>
               ))}
           </div>
