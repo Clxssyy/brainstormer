@@ -29,6 +29,16 @@ const handlePrompt = async (prompt: string) => {
   return response?.split("\n");
 };
 
+const handleImagePrompt = async (prompt: string) => {
+  const completion = await openai.images.generate({
+    prompt: prompt,
+    model: "dall-e-2",
+    n: 1,
+  });
+
+  return completion.data[0]?.url ?? "/default-avatar.jpg";
+};
+
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
@@ -321,6 +331,30 @@ export const postRouter = createTRPCRouter({
         data: {
           image: input.image,
           content: input.content,
+        },
+      });
+    }),
+
+  generateImage: protectedProcedure
+    .input(z.object({ prompt: z.string().min(1) }))
+    .query(async ({ input }) => {
+      return handleImagePrompt(input.prompt);
+    }),
+
+  setImage: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        image: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.page.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          image: await handleImagePrompt(input.image),
         },
       });
     }),

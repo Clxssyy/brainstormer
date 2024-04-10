@@ -13,6 +13,10 @@ const config = {
         hostname: "cdn.discordapp.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
+      },
     ],
   },
 };

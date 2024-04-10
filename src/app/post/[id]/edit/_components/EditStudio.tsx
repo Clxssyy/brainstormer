@@ -8,7 +8,6 @@ import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { useState } from "react";
 import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
-import Link from "next/link";
 import { TbArrowBackUp } from "react-icons/tb";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
@@ -35,6 +34,12 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
 
   const [name, setName] = useState(post!.name);
   const [description, setDescription] = useState(post!.description || "");
+
+  const generateImage = api.post.setImage.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
 
   return (
     <div className="grow overflow-y-auto bg-neutral-950 p-8 text-white">
@@ -147,9 +152,9 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                       <button
                         className="min-w-[50%] rounded bg-neutral-800 p-2 hover:bg-neutral-700"
                         onClick={() =>
-                          pageUpdater.mutate({
+                          generateImage.mutate({
                             id: page.id,
-                            image: "/default-avatar.jpg",
+                            image: pageContent,
                           })
                         }
                       >
