@@ -35,13 +35,13 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
   const [description, setDescription] = useState(post!.description || "");
 
   return (
-    <div className="grow bg-neutral-950 p-8 text-white overflow-y-auto">
+    <div className="grow overflow-y-auto bg-neutral-950 p-8 text-white">
       <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent">
         Edit Studio - #{id}
       </h1>
-      <div className="flex gap-2">
+      <div className="mt-4 flex justify-center gap-2">
         <button
-          className="rounded-full bg-white/5 p-2 hover:text-red-400"
+          className="rounded-full bg-white/5 p-4 hover:text-red-400"
           onClick={() => {
             deletePost.mutate({
               id: post!.id,
@@ -51,7 +51,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
           <FaTrash />
         </button>
         <button
-          className="rounded-full bg-white/5 p-2 hover:text-pink-500"
+          className="rounded-full bg-white/5 p-4 hover:text-pink-500"
           onClick={() => {
             postUpdater.mutate({
               id: id,
@@ -62,7 +62,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
           {post!.published ? <FaLock /> : <FaLockOpen />}
         </button>
       </div>
-      <div className="flex gap-2">
+      <div className="mt-4 flex flex-col gap-2">
         <input
           type="text"
           value={name}
@@ -70,15 +70,15 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
           placeholder="Name"
           onChange={(e) => setName(e.target.value)}
         />
-        <input
-          type="text"
+        <textarea
           value={description}
-          className="rounded bg-neutral-800 p-2"
+          className="resize-none rounded bg-neutral-800 p-2"
           placeholder="Description"
           onChange={(e) => setDescription(e.target.value)}
+          rows={4}
         />
         <button
-          className="rounded bg-neutral-800 p-2"
+          className="rounded bg-neutral-800 p-2 hover:bg-neutral-700"
           onClick={() => {
             postUpdater.mutate({
               id: id,
@@ -90,26 +90,71 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
           Update
         </button>
       </div>
-      <p>Pages: {post!.pages.length}</p>
-      {post!.pages.map((page, index) => {
-        return (
-          <div key={index} className="flex flex-col">
-            <p>Page #{index + 1}</p>
-            <div className="flex gap-2 place-items-center">
-              <p>{page.content}</p>
-              <button
-                className="bg-neutral-800 rounded p-2"
-                onClick={() => pageUpdater.mutate({
-                  id: page.id,
-                  image: "/default-avatar.jpg",
-                })}
-              > Generate Image</button>
-            </div>
-            {page.image ? <Image src={page.image} width={100} height={100} alt="image" /> : undefined}
-          </div>
-        );
-      })}
-    </div >
+      <div className="mt-4">
+        <p className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
+          Pages ({post!.pages.length})
+        </p>
+        <div className="flex flex-col gap-2 divide-y divide-amber-400">
+          {post!.pages.map((page, index) => {
+            const [pageContent, setPageContent] = useState<string>(
+              page.content,
+            );
+            return (
+              <div key={index} className="flex flex-col gap-2">
+                <div className="flex flex-col place-items-center">
+                  <p className="text-xl">Page {index + 1}</p>
+                  {page.image ? (
+                    <Image
+                      src={page.image}
+                      width={100}
+                      height={100}
+                      alt="image"
+                      className="aspect-square w-96 rounded"
+                    />
+                  ) : undefined}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <textarea
+                    id={page.postId + "-" + page.number}
+                    value={pageContent}
+                    className="resize-none rounded bg-neutral-800 p-2"
+                    placeholder="Content"
+                    onChange={(e) => setPageContent(e.target.value)}
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      className="min-w-[50%] grow rounded bg-neutral-800 p-2 hover:bg-neutral-700"
+                      onClick={() =>
+                        pageUpdater.mutate({
+                          id: page.id,
+                          content: pageContent,
+                        })
+                      }
+                    >
+                      Update
+                    </button>
+                    {page.image ? undefined : (
+                      <button
+                        className="min-w-[50%] rounded bg-neutral-800 p-2 hover:bg-neutral-700"
+                        onClick={() =>
+                          pageUpdater.mutate({
+                            id: page.id,
+                            image: "/default-avatar.jpg",
+                          })
+                        }
+                      >
+                        {" "}
+                        Generate Image
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 };
 
