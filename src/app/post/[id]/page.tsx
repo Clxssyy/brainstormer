@@ -87,7 +87,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 </div>
               ))}
           </div>
-          <div className="flex place-items-center justify-between bg-neutral-800 p-2">
+          <div className="flex place-items-center justify-between bg-neutral-900 p-2">
             <div className="flex gap-2">
               <LikeButton post={post} session={session} />
               <CommentButton post={post} />
