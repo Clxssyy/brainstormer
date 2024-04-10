@@ -8,6 +8,8 @@ import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { useState } from "react";
 import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
+import Link from "next/link";
+import { TbArrowBackUp } from "react-icons/tb";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -36,9 +38,17 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
 
   return (
     <div className="grow overflow-y-auto bg-neutral-950 p-8 text-white">
-      <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent">
-        Edit Studio - #{id}
-      </h1>
+      <div className="relative flex justify-center">
+        <button
+          onClick={() => router.push(`/post/${id}`)}
+          className="absolute left-0 top-0 rounded-full bg-white/5 p-3 hover:text-amber-400"
+        >
+          <TbArrowBackUp className="h-6 w-6" />
+        </button>
+        <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent">
+          Edit Studio - #{id}
+        </h1>
+      </div>
       <div className="mt-4 flex justify-center gap-2">
         <button
           className="rounded-full bg-white/5 p-4 hover:text-red-400"
