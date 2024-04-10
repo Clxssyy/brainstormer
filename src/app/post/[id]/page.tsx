@@ -5,6 +5,7 @@ import { api } from "~/trpc/server";
 import LikeButton from "./_components/LikeButton";
 import CommentButton from "./_components/CommentButton";
 import CommentCard from "./_components/CommentCard";
+import DropdownMenu from "./_components/DropdownMenu";
 
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
@@ -23,7 +24,9 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
     );
   }
 
-  if (post.createdById !== session?.user?.id && !post.published) {
+  const isOwner = post.createdById === session?.user.id;
+
+  if (!isOwner && !post.published) {
     return (
       <div className="error-bg flex grow place-items-center justify-center">
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
@@ -51,7 +54,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
                   {post?.name}
                 </h1>
-                <p className="text-xs text-neutral-500">#{post.id}</p>
+                {isOwner ? <DropdownMenu id={post.id} /> : undefined}
               </div>
               <div className="flex place-items-center justify-between">
                 <Link
@@ -60,6 +63,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                 >
                   {post.createdBy.name}
                 </Link>
+                <p className="text-xs text-neutral-500">#{post.id}</p>
               </div>
             </div>
           </div>
