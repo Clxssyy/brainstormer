@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import FollowButton from "../_components/FollowButton";
-import BrainstormCard from "~/app/_components/BrainstormCard";
+import ProfileBrainstormCard from "../_components/ProfileBrainstormCard";
 
 const userPage = async ({ params }: { params: { username: string } }) => {
   const session = await getServerAuthSession();
@@ -61,7 +61,7 @@ const userPage = async ({ params }: { params: { username: string } }) => {
           <h1 className="text-2xl font-bold">Posts</h1>
           <div className="grid gap-4 md:grid-cols-2">
             {posts.items.map((post) => {
-              return <BrainstormCard key={post.id} post={post} />;
+              return <ProfileBrainstormCard key={post.id} post={post} />;
             })}
           </div>
         </div>
