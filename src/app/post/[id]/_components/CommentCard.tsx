@@ -15,7 +15,7 @@ const CommentCard = async ({
 }) => {
   const user = await api.user.getById.query({ id: comment.userId });
   return (
-    <div className="flex h-20 place-items-center gap-4 p-2 even:bg-white/10">
+    <div className="flex h-20 place-items-center gap-4 p-2 odd:bg-white/10">
       <Image
         src={user!.image || "/default-avatar.jpg"}
         alt={user!.name || "User"}
