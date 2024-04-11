@@ -151,15 +151,18 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                     {page.image ? undefined : (
                       <button
                         className="min-w-[50%] rounded bg-neutral-800 p-2 hover:bg-neutral-700"
-                        onClick={() =>
+                        onClick={() => {
+                          if (generateImage.isLoading) return;
                           generateImage.mutate({
                             id: page.id,
                             image: pageContent,
-                          })
-                        }
+                          });
+                        }}
                       >
                         {" "}
-                        Generate Image
+                        {generateImage.isLoading
+                          ? "Generating..."
+                          : "Generate Image"}
                       </button>
                     )}
                   </div>
