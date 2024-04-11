@@ -32,7 +32,7 @@ const handlePrompt = async (prompt: string) => {
 const handleImagePrompt = async (prompt: string) => {
   const completion = await openai.images.generate({
     prompt: prompt,
-    model: "dall-e-2",
+    model: "dall-e-3",
     n: 1,
   });
 
