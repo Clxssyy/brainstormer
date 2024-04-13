@@ -42,7 +42,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
   });
 
   return (
-    <div className="grow overflow-y-auto bg-neutral-950 p-8 text-white">
+    <div className="custom-scroll grow overflow-y-auto bg-neutral-950 p-8 text-white">
       <div className="relative flex justify-center">
         <button
           onClick={() => router.push(`/post/${id}`)}
