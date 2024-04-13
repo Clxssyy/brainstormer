@@ -45,7 +45,7 @@ const ProfileDropdown = ({ session }: { session: Session }) => {
         />
       </button>
       <div
-        className={`${hidden ? "hidden" : ""} absolute right-0 top-10 flex flex-col divide-y divide-neutral-800 rounded-lg bg-neutral-900`}
+        className={`${hidden ? "hidden" : ""} absolute right-0 top-10 z-10 flex w-48 flex-col divide-y divide-neutral-800 rounded-lg border-2 border-neutral-800 bg-neutral-900`}
       >
         <Link
           href={`/user/${session.user.name}`}
