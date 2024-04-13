@@ -76,8 +76,8 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                     {page.image ? (
                       <Image
                         src={page.image}
-                        width={100}
-                        height={100}
+                        width={1024}
+                        height={1024}
                         alt="image"
                         className="aspect-square w-96 rounded"
                       />
