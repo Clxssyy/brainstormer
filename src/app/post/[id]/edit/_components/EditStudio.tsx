@@ -121,8 +121,8 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                   {page.image ? (
                     <Image
                       src={page.image}
-                      width={100}
-                      height={100}
+                      width={1024}
+                      height={1024}
                       alt="image"
                       className="aspect-square w-96 rounded"
                     />
@@ -138,7 +138,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                   />
                   <div className="flex gap-2">
                     <button
-                      className="min-w-[50%] grow rounded bg-neutral-800 p-2 hover:bg-neutral-700"
+                      className="grow rounded bg-neutral-800 p-2 hover:bg-neutral-700"
                       onClick={() =>
                         pageUpdater.mutate({
                           id: page.id,
@@ -150,7 +150,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                     </button>
                     {page.image ? undefined : (
                       <button
-                        className="min-w-[50%] rounded bg-neutral-800 p-2 hover:bg-neutral-700"
+                        className="max-w-[50%] grow rounded bg-neutral-800 p-2 hover:bg-neutral-700"
                         onClick={() => {
                           if (generateImage.isLoading) return;
                           generateImage.mutate({
