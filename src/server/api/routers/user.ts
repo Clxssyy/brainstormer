@@ -39,6 +39,7 @@ export const userRouter = createTRPCRouter({
                       createdBy: true,
                       likes: true,
                       comments: true,
+                      pages: true,
                     },
                     where: {
                       published: true,

@@ -168,7 +168,7 @@ export const postRouter = createTRPCRouter({
         take: limit + 1,
         skip: 0,
         cursor: cursor ? { id: cursor } : undefined,
-        include: { createdBy: true, likes: true, comments: true },
+        include: { createdBy: true, likes: true, comments: true, pages: true },
         where: { published: published },
       });
       const items = page.reverse();
@@ -206,7 +206,7 @@ export const postRouter = createTRPCRouter({
         take: limit + 1,
         skip: 0,
         cursor: cursor ? { id: cursor } : undefined,
-        include: { createdBy: true, likes: true, comments: true },
+        include: { createdBy: true, likes: true, comments: true, pages: true },
         where: { published: published, createdById: input.id },
       });
       const items = page.reverse();

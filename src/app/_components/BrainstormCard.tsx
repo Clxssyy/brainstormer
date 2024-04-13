@@ -1,8 +1,13 @@
+import { inferRouterOutputs } from "@trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import { FaComment, FaEyeSlash, FaHeart } from "react-icons/fa";
+import { AppRouter } from "~/server/api/root";
 
-const BrainstormCard = ({ post }: { post: any }) => {
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type Post = RouterOutput["post"]["getAll"]["items"][0];
+
+const BrainstormCard = ({ post }: { post: Post }) => {
   const currentDate = new Date();
   const postDate = new Date(post.createdAt);
 
@@ -13,7 +18,7 @@ const BrainstormCard = ({ post }: { post: any }) => {
 
   return (
     <div className="flex grow gap-2 rounded border border-neutral-800 bg-neutral-900 p-2">
-      <div className="relative relative min-w-fit">
+      <div className="relative min-w-fit">
         {post.published ? null : (
           <div className="absolute flex h-full w-full place-items-center justify-center">
             <FaEyeSlash className="h-10 w-10 text-amber-400/50" />
@@ -22,7 +27,7 @@ const BrainstormCard = ({ post }: { post: any }) => {
         <Link href={`/post/${post.id}`}>
           <Image
             alt={post.createdById}
-            src="/default-avatar.jpg"
+            src={post.pages[0]?.image || "/default-avatar.jpg"}
             width={128}
             height={128}
             className="aspect-square rounded"
