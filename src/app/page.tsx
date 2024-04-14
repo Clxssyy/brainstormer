@@ -1,4 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 
@@ -10,20 +9,19 @@ const FeatureCard = ({
   children: string;
 }) => {
   return (
-    <div className="rounded bg-neutral-900 p-4 shadow">
+    <div className="h-40 rounded bg-neutral-900 p-4 shadow">
       <h2 className="text-2xl font-semibold">{title}</h2>
-      <p className="mt-2">{children}</p>
+      <p className="mt-2 text-sm">{children}</p>
     </div>
   );
 };
 
 export default async function Home() {
-  noStore();
   const session = await getServerAuthSession();
 
   return (
-    <div className="flex grow place-items-center justify-center bg-neutral-950 text-neutral-200">
-      <div className="flex w-1/2 flex-col gap-4">
+    <div className="custom-scroll grow overflow-y-scroll bg-neutral-950 text-neutral-200">
+      <div className="m-8 flex flex-col place-items-center gap-4">
         <div>
           <h1 className="text-center text-3xl font-bold text-transparent md:text-6xl">
             <span className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text">
@@ -36,12 +34,12 @@ export default async function Home() {
               !
             </span>
           </h1>
-          <p className="text-center text-sm">
+          <p className="text-center text-xs">
             From random thoughts to complete stories, Brainstormer is the place
             to be!
           </p>
         </div>
-        <div className="flex justify-center gap-8">
+        <div className="flex sm:gap-8">
           <Link
             href={session ? "/create" : "/api/auth/signin"}
             className="w-36 place-self-center rounded-3xl bg-amber-400 px-4 py-2 text-center font-semibold text-black transition duration-300 ease-in-out hover:bg-amber-500"
@@ -50,7 +48,7 @@ export default async function Home() {
           </Link>
           <Link
             href="/explore"
-            className="w-36 place-self-center rounded-3xl px-4 py-2 text-center font-semibold text-white ring-1 ring-amber-400 transition duration-300 ease-in-out hover:bg-white/5"
+            className="hidden w-36 place-self-center rounded-3xl px-4 py-2 text-center font-semibold text-white ring-1 ring-amber-400 transition duration-300 ease-in-out hover:bg-white/5 sm:block"
           >
             Examples
           </Link>
@@ -60,10 +58,10 @@ export default async function Home() {
             Transform your random thoughts into entire short stories!
           </FeatureCard>
           <FeatureCard title="Alternative pathways">
-            Discover alternative pathways.
+            Choose how your story continues with alternative pathways.
           </FeatureCard>
           <FeatureCard title="Unique Images">
-            Find unique images for inspiration.
+            Generate unique images for each page.
           </FeatureCard>
           <FeatureCard title="Provide & receive feedback">
             Provide and receive feedback on Brainstorms.

@@ -26,24 +26,9 @@ export default async function RootLayout({
 }) {
   const session = await getServerAuthSession();
 
-  if (!session) {
-    return (
-      <html lang="en">
-        <body
-          className={`font-sans ${inter.variable} h-screen overflow-hidden`}
-        >
-          <TRPCReactProvider>
-            <main className="flex h-screen flex-col overflow-hidden">
-              <Header />
-              <div className="flex grow flex-col">{children}</div>
-            </main>
-          </TRPCReactProvider>
-        </body>
-      </html>
-    );
-  }
+  let user;
 
-  const user = await api.user.getById.query({ id: session?.user?.id });
+  if (session) user = await api.user.getById.query({ id: session?.user?.id });
 
   return (
     <html lang="en">
@@ -51,10 +36,10 @@ export default async function RootLayout({
         <TRPCReactProvider>
           <main className="flex h-screen flex-col overflow-hidden">
             <Header />
-            <div className="flex grow overflow-hidden">
-              <Sidebar user={user} />
-              <div className="flex grow flex-col">{children}</div>
-            </div>
+            <section className={"flex grow overflow-hidden"}>
+              {user && <Sidebar user={user} />}
+              {children}
+            </section>
           </main>
         </TRPCReactProvider>
       </body>
