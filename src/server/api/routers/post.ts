@@ -89,12 +89,6 @@ export const postRouter = createTRPCRouter({
         });
     }),
 
-  getChoices: protectedProcedure
-    .input(z.object({ prompt: z.string() }))
-    .query(async ({ input }) => {
-      return handlePrompt(input.prompt);
-    }),
-
   addPage: protectedProcedure
     .input(
       z.object({
@@ -120,16 +114,6 @@ export const postRouter = createTRPCRouter({
             choices: choices,
           };
         });
-    }),
-
-  getLatest: protectedProcedure
-    .input(z.object({ amount: z.number() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.post.findMany({
-        orderBy: { createdAt: "desc" },
-        take: input.amount,
-        include: { createdBy: true },
-      });
     }),
 
   getById: publicProcedure
@@ -221,14 +205,6 @@ export const postRouter = createTRPCRouter({
         items,
         nextCursor,
       };
-    }),
-
-  getMany: publicProcedure
-    .input(z.object({ amount: z.number() }))
-    .query(async ({ ctx, input }) => {
-      return ctx.db.post.findMany({
-        take: input.amount,
-      });
     }),
 
   delete: protectedProcedure
@@ -333,12 +309,6 @@ export const postRouter = createTRPCRouter({
           content: input.content,
         },
       });
-    }),
-
-  generateImage: protectedProcedure
-    .input(z.object({ prompt: z.string().min(1) }))
-    .query(async ({ input }) => {
-      return handleImagePrompt(input.prompt);
     }),
 
   setImage: protectedProcedure
