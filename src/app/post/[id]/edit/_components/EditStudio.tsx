@@ -13,6 +13,43 @@ import { TbArrowBackUp } from "react-icons/tb";
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
 
+type Page = {
+  id: number;
+  content: string;
+  image: string | null;
+  number: number;
+  createdAt: Date;
+  updatedAt: Date;
+  postId: number;
+};
+
+const ImageButton = ({ page }: { page: Page }) => {
+  const router = useRouter();
+
+  const generateImage = api.post.setImage.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+
+  return (
+    <button
+      className="max-w-[50%] grow rounded bg-neutral-800 p-2 hover:bg-neutral-700 disabled:cursor-not-allowed disabled:bg-neutral-900"
+      onClick={() => {
+        if (generateImage.isLoading) return;
+        generateImage.mutate({
+          id: page.id,
+          image: page.content,
+        });
+      }}
+      disabled={generateImage.isLoading}
+    >
+      {" "}
+      {generateImage.isLoading ? "Generating..." : "Generate Image"}
+    </button>
+  );
+};
+
 const EditStudio = ({ id, post }: { id: string; post: Post }) => {
   const router = useRouter();
   const postUpdater = api.post.update.useMutation({
@@ -34,12 +71,6 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
 
   const [name, setName] = useState(post!.name);
   const [description, setDescription] = useState(post!.description || "");
-
-  const generateImage = api.post.setImage.useMutation({
-    onSuccess: () => {
-      router.refresh();
-    },
-  });
 
   return (
     <div className="custom-scroll grow overflow-y-auto bg-neutral-950 p-8 text-white">
@@ -148,23 +179,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
                     >
                       Update
                     </button>
-                    {page.image ? undefined : (
-                      <button
-                        className="max-w-[50%] grow rounded bg-neutral-800 p-2 hover:bg-neutral-700"
-                        onClick={() => {
-                          if (generateImage.isLoading) return;
-                          generateImage.mutate({
-                            id: page.id,
-                            image: pageContent,
-                          });
-                        }}
-                      >
-                        {" "}
-                        {generateImage.isLoading
-                          ? "Generating..."
-                          : "Generate Image"}
-                      </button>
-                    )}
+                    {page.image ? undefined : <ImageButton page={page} />}
                   </div>
                 </div>
               </div>
