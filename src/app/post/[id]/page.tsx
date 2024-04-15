@@ -6,6 +6,7 @@ import LikeButton from "./_components/LikeButton";
 import CommentButton from "./_components/CommentButton";
 import CommentCard from "./_components/CommentCard";
 import DropdownMenu from "./_components/DropdownMenu";
+import PageDisplay from "./_components/PageDisplay";
 
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
@@ -69,26 +70,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
               </div>
             </div>
           </div>
-          <div className="flex grow divide-x-2 divide-neutral-900">
-            {post.pages
-              .filter((page) => page.number < 3)
-              .map((page) => (
-                <div key={page.id} className="flex w-1/2 flex-col p-4">
-                  <div className="flex justify-center">
-                    {page.image ? (
-                      <Image
-                        src={page.image}
-                        width={1024}
-                        height={1024}
-                        alt="image"
-                        className="aspect-square h-96 rounded"
-                      />
-                    ) : undefined}
-                  </div>
-                  <p>{page.content}</p>
-                </div>
-              ))}
-          </div>
+          <PageDisplay post={post} />
           <div className="flex place-items-center justify-between bg-neutral-900 p-2">
             <div className="flex gap-2">
               <LikeButton post={post} session={session} />
