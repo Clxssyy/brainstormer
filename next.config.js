@@ -17,6 +17,10 @@ const config = {
         protocol: "https",
         hostname: "oaidalleapiprodscus.blob.core.windows.net",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+      },
     ],
   },
   typescript: {

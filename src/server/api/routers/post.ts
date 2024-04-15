@@ -6,6 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import OpenAI from "openai";
+import { utapi } from "~/uploadthing/server";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -36,7 +37,19 @@ const handleImagePrompt = async (prompt: string) => {
     n: 1,
   });
 
-  return completion.data[0]?.url ?? "/default-avatar.jpg";
+  if (!completion.data[0]?.url) {
+    return "/default-avatar.jpg";
+  }
+
+  const res = await utapi.uploadFilesFromUrl(completion.data[0]?.url);
+
+  const url = res.data?.url;
+
+  if (!url) {
+    return "/default-avatar.jpg";
+  }
+
+  return url;
 };
 
 export const postRouter = createTRPCRouter({
