@@ -117,10 +117,10 @@ export const postRouter = createTRPCRouter({
     }),
 
   getById: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.post.findUnique({
-        where: { id: Number(input.id) },
+        where: { id: input.id },
         include: {
           createdBy: true,
           pages: {

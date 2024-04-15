@@ -10,23 +10,25 @@ import DropdownMenu from "./_components/DropdownMenu";
 const PostPage = async ({ params }: { params: { id: string } }) => {
   const session = await getServerAuthSession();
 
-  const post = await api.post.getById.query({
-    id: params.id,
-  });
+  const id = parseInt(params.id, 10);
 
-  if (!post) {
+  if (isNaN(id)) {
     return (
       <div className="error-bg flex grow place-items-center justify-center">
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
-          Post not found!
+          Invalid post id!
         </h1>
       </div>
     );
   }
 
-  const isOwner = post.createdById === session?.user.id;
+  const post = await api.post.getById.query({
+    id: id,
+  });
 
-  if (!isOwner && !post.published) {
+  const isOwner = post?.createdById === session?.user.id;
+
+  if ((!isOwner && !post?.published) || !post) {
     return (
       <div className="error-bg flex grow place-items-center justify-center">
         <h1 className="bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-center text-6xl font-bold text-transparent">
