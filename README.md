@@ -11,6 +11,15 @@ Turn your random ideas into full short stories with unique images. Share your id
 - Search Brainstorms by tag, title, and user.
 - Save your ideas for later.
 
+## Todo
+
+- [ ] Mobile Overhaul
+- [ ] Post hashtags
+- [ ] Search for users / posts
+- [ ] Github actions
+- [ ] Project clean up
+- [ ] Multiple people per post??
+
 ## Tech
 
 - [Next.js](https://nextjs.org)
