@@ -332,12 +332,13 @@ export const postRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const imageURL = await handleImagePrompt(input.image);
       return ctx.db.page.update({
         where: {
           id: input.id,
         },
         data: {
-          image: await handleImagePrompt(input.image),
+          image: imageURL,
         },
       });
     }),
