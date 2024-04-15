@@ -1,6 +1,8 @@
 import { api } from "~/trpc/server";
 import BrainstormCard from "../_components/BrainstormCard";
 
+export const dynamic = "force-dynamic";
+
 const ExplorePage = async () => {
   const postQuery = await api.post.getAll.query({});
 
