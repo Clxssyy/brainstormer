@@ -81,7 +81,7 @@ const PostPage = async ({ params }: { params: { id: string } }) => {
                         width={1024}
                         height={1024}
                         alt="image"
-                        className="aspect-square w-96 rounded"
+                        className="aspect-square h-96 rounded"
                       />
                     ) : undefined}
                   </div>
