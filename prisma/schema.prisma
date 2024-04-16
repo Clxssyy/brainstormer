@@ -18,6 +18,7 @@ model Post {
     id          Int       @id @default(autoincrement())
     name        String
     description String?
+    tags        String?
     pages       Page[]    @relation("PostPages")
     published   Boolean   @default(false)
     createdAt   DateTime  @default(now())

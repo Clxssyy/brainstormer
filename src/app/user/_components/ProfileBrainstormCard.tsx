@@ -21,29 +21,31 @@ const ProfileBrainstormCard = ({ post }: { post: Post }) => {
       href={`/post/${post.id}`}
       className="transition-all hover:scale-[101%]"
     >
-      <div className="flex grow gap-2 rounded border border-neutral-800 bg-neutral-900 p-2">
+      <div className="flex h-56 grow gap-2 rounded border border-neutral-800 bg-neutral-900 p-2">
         <div className="relative min-w-fit">
           {post.published ? null : (
             <div className="absolute flex h-full w-full place-items-center justify-center">
               <FaEyeSlash className="h-10 w-10 text-amber-400/50" />
             </div>
           )}
-          <Image
-            alt={post.createdById}
-            src={post.pages[0]?.image || "/default-avatar.jpg"}
-            width={128}
-            height={128}
-            className="aspect-square rounded"
-          />
-          {isHot ? (
-            <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
-              🔥
-            </p>
-          ) : isNew ? (
-            <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
-              New!
-            </p>
-          ) : undefined}
+          <div className="relative">
+            <Image
+              alt={post.createdById}
+              src={post.pages[0]?.image || "/default-avatar.jpg"}
+              width={128}
+              height={128}
+              className="aspect-square rounded"
+            />
+            {isHot ? (
+              <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
+                🔥
+              </p>
+            ) : isNew ? (
+              <p className="absolute bottom-0 left-0 rotate-12 font-bold text-amber-400">
+                New!
+              </p>
+            ) : undefined}
+          </div>
         </div>
         <div className="flex grow flex-col gap-2 overflow-hidden">
           <div>

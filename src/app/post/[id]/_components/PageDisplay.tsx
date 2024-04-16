@@ -31,7 +31,7 @@ const PageDisplay = ({ post }: { post: Post }) => {
         onClick={() => {
           setPageCount(pageCount - 1);
         }}
-        className={`transition-colors hover:bg-white/5 ${pageCount * 2 - 1 > 1 ? "" : "invisible"}`}
+        className={`transition-colors hover:animate-pulse hover:bg-white/5 ${pageCount * 2 - 1 > 1 ? "" : "invisible"}`}
       >
         <FaChevronLeft className="h-6 w-6" />
       </button>
@@ -57,7 +57,7 @@ const PageDisplay = ({ post }: { post: Post }) => {
         onClick={() => {
           setPageCount(pageCount + 1);
         }}
-        className={`transition-colors hover:bg-white/5 ${pageCount * 2 + 1 <= post!.pages.length ? "" : "invisible"}`}
+        className={`transition-colors hover:animate-pulse hover:bg-white/5 ${pageCount * 2 + 1 <= post!.pages.length ? "" : "invisible"}`}
       >
         <FaChevronRight className="h-6 w-6" />
       </button>
