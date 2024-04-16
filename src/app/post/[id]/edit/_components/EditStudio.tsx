@@ -9,6 +9,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaTrash } from "react-icons/fa";
 import { TbArrowBackUp } from "react-icons/tb";
+import { TagSpan } from "~/app/_components/BrainstormCard";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -71,6 +72,9 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
 
   const [name, setName] = useState(post!.name);
   const [description, setDescription] = useState(post!.description || "");
+  const [tags, setTags] = useState(
+    post!.tags?.split(/(#\w+)/).filter((tag) => tag !== "") || [],
+  );
 
   return (
     <div className="custom-scroll grow overflow-y-auto bg-neutral-950 p-8 text-white">
@@ -123,6 +127,39 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
           onChange={(e) => setDescription(e.target.value)}
           rows={4}
         />
+        <div className="flex flex-col gap-1">
+          <input
+            onChange={(e) => {
+              if (
+                e.target.value.startsWith("#") &&
+                e.target.value.length > 2 &&
+                e.target.value.endsWith(" ")
+              ) {
+                e.target.value = e.target.value.trim();
+                setTags([
+                  ...tags,
+                  ...e.target.value.split(/(#\w+)/).filter((tag) => tag !== ""),
+                ]);
+                e.target.value = "";
+              }
+            }}
+            placeholder="#tagsGoHere"
+            className="rounded bg-neutral-800 p-2"
+          />
+          <div className="flex gap-1">
+            {tags.map((tag, index) => (
+              <button
+                className="flex rounded-full hover:bg-red-600"
+                onClick={() => {
+                  setTags(tags.filter((t) => t !== tag));
+                }}
+                key={tag + "-" + index}
+              >
+                <TagSpan tag={tag} />
+              </button>
+            ))}
+          </div>
+        </div>
         <button
           className="rounded bg-neutral-800 p-2 hover:bg-neutral-700"
           onClick={() => {
@@ -130,6 +167,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
               id: id,
               name,
               description,
+              tags: tags.join(""),
             });
           }}
         >

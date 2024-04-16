@@ -244,6 +244,7 @@ export const postRouter = createTRPCRouter({
         name: z.string().min(1).nullish(),
         description: z.string().nullish(),
         published: z.boolean().nullish(),
+        tags: z.string().min(2).nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -253,6 +254,7 @@ export const postRouter = createTRPCRouter({
           name: input.name ?? undefined,
           description: input.description ?? undefined,
           published: input.published ?? undefined,
+          tags: input.tags ?? undefined,
         },
       });
     }),

@@ -7,7 +7,7 @@ import { AppRouter } from "~/server/api/root";
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getAll"]["items"][0];
 
-const TagSpan = ({ tag }: { tag: string }) => {
+export const TagSpan = ({ tag }: { tag: string }) => {
   const colorDict: { [key: number]: string } = {
     2: "green",
     3: "blue",
@@ -20,8 +20,6 @@ const TagSpan = ({ tag }: { tag: string }) => {
   };
 
   const color = colorDict[tag.length];
-  console.log(color);
-  console.log(tag);
 
   return (
     <span className={`${color} w-fit truncate rounded-full px-2 text-xs`}>
