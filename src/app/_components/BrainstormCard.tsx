@@ -1,14 +1,14 @@
-import { inferRouterOutputs } from "@trpc/server";
+import type { inferRouterOutputs } from "@trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import { FaComment, FaHeart } from "react-icons/fa";
-import { AppRouter } from "~/server/api/root";
+import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getAll"]["items"][0];
 
 export const TagSpan = ({ tag }: { tag: string }) => {
-  const colorDict: { [key: number]: string } = {
+  const colorDict: Record<number, string> = {
     2: "green",
     3: "blue",
     4: "indigo",
@@ -50,7 +50,7 @@ const BrainstormCard = ({ post }: { post: Post }) => {
         <Link href={`/post/${post.id}`} className="relative">
           <Image
             alt={post.createdById}
-            src={post.pages[0]?.image || "/default-avatar.jpg"}
+            src={post.pages[0]?.image ?? "/default-avatar.jpg"}
             width={128}
             height={128}
             className="aspect-square rounded"
@@ -66,8 +66,8 @@ const BrainstormCard = ({ post }: { post: Post }) => {
           ) : undefined}
         </Link>
         <div className="hidden-scroll flex flex-wrap place-items-center justify-center gap-1 overflow-x-hidden overflow-y-scroll">
-          {tags.map((tag) => (
-            <TagSpan tag={tag} />
+          {tags.map((tag, index) => (
+            <TagSpan tag={tag} key={index + "-" + tag} />
           ))}
         </div>
       </div>
@@ -98,7 +98,7 @@ const BrainstormCard = ({ post }: { post: Post }) => {
         </div>
         <div className="grow rounded bg-neutral-800 text-sm text-neutral-500">
           <p className="truncate p-1">
-            {post.description || "No description provided."}
+            {post.description ?? "No description provided."}
           </p>
         </div>
         <div className="flex place-items-center justify-between gap-2">

@@ -1,11 +1,12 @@
 "use client";
 
-import { inferRouterOutputs, router } from "@trpc/server";
-import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
+
+import type { AppRouter } from "~/server/api/root";
+import type { inferRouterOutputs } from "@trpc/server";
+import type { Session } from "next-auth";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];

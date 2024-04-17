@@ -3,9 +3,10 @@
 import { api } from "~/trpc/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "~/server/api/root";
 import Link from "next/link";
+
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -13,11 +14,11 @@ type Post = RouterOutput["post"]["getById"];
 const CreatePage = () => {
   const [choices, setChoices] = useState<string[]>([]);
   const [post, setPost] = useState<Post>(null);
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState<number>(0);
 
   const create = api.post.create.useMutation({
     onSuccess: async (data) => {
-      setChoices(data.choices || []);
+      setChoices(data.choices ?? []);
       setPost(data.post);
     },
     onError: (err) => {
@@ -27,14 +28,14 @@ const CreatePage = () => {
 
   const addPage = api.post.addPage.useMutation({
     onSuccess: async (data) => {
-      setChoices(data.choices || []);
+      setChoices(data.choices ?? []);
     },
     onError: (err) => {
       console.error(err);
     },
   });
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<{ name: string }>();
 
   return (
     <div className="flex grow justify-center bg-neutral-950 p-8">

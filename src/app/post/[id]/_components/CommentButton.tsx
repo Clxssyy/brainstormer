@@ -1,20 +1,17 @@
 "use client";
 
-import { inferRouterOutputs } from "@trpc/server";
 import { useRouter } from "next/navigation";
 import { FaRegComment } from "react-icons/fa";
-import { AppRouter } from "~/server/api/root";
 import { api } from "~/trpc/react";
 import { useState } from "react";
+
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
 
-const CommentButton = ({
-  post,
-}: {
-  post: Post;
-}) => {
+const CommentButton = ({ post }: { post: Post }) => {
   const [comment, setComment] = useState<string>("");
   const [hidden, setHidden] = useState<boolean>(true);
   const router = useRouter();

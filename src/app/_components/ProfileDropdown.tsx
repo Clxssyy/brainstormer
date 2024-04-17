@@ -1,6 +1,5 @@
 "use client";
 
-import type { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -8,15 +7,17 @@ import { FaUser, FaBrain, FaHeart } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
+import type { Session } from "next-auth";
+
 const ProfileDropdown = ({ session }: { session: Session }) => {
   const [hidden, setHidden] = useState<boolean>(true);
 
   const ref = useRef(null);
 
-  const handleClickOutside = (event: any) => {
+  const handleClickOutside = (event: MouseEvent) => {
     if (
       ref.current &&
-      !(ref.current as unknown as HTMLElement).contains(event.target)
+      !(ref.current as HTMLElement).contains(event.target as Node)
     ) {
       setHidden(true);
     }

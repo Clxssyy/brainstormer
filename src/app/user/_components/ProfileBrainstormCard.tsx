@@ -1,8 +1,9 @@
-import { inferRouterOutputs } from "@trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import { FaComment, FaEyeSlash, FaHeart } from "react-icons/fa";
-import { AppRouter } from "~/server/api/root";
+
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getAll"]["items"][0];
@@ -31,7 +32,7 @@ const ProfileBrainstormCard = ({ post }: { post: Post }) => {
           <div className="relative">
             <Image
               alt={post.createdById}
-              src={post.pages[0]?.image || "/default-avatar.jpg"}
+              src={post.pages[0]?.image ?? "/default-avatar.jpg"}
               width={128}
               height={128}
               className="aspect-square rounded"
@@ -60,7 +61,7 @@ const ProfileBrainstormCard = ({ post }: { post: Post }) => {
           </div>
           <div className="grow rounded bg-neutral-800 p-1 text-sm text-neutral-500">
             <p className="truncate">
-              {post.description || "No description provided."}
+              {post.description ?? "No description provided."}
             </p>
           </div>
           <div className="flex place-items-center justify-between gap-2">

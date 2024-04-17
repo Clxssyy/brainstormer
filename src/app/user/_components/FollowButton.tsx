@@ -1,15 +1,21 @@
 "use client";
 
-import { Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+
+import type { Session } from "next-auth";
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "~/server/api/root";
+
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type User = RouterOutput["user"]["getByName"];
 
 const FollowButton = ({
   user,
   session,
 }: {
-  user: any;
+  user: User;
   session: Session | null;
 }) => {
   const router = useRouter();
@@ -31,12 +37,17 @@ const FollowButton = ({
     },
   });
 
-  if (user.followers.some((u: any) => u.userId === session?.user.id)) {
+  if (
+    user!.followers.some(
+      (u: { id: number; userId: string; followsId: string }) =>
+        u.userId === session?.user.id,
+    )
+  ) {
     return (
       <button
         className="place-self-center rounded-full bg-amber-500 px-3 text-black hover:bg-amber-400"
         onClick={() => {
-          unfollow.mutate({ id: user.id });
+          unfollow.mutate({ id: user!.id });
         }}
       >
         Unfollow
@@ -48,7 +59,7 @@ const FollowButton = ({
     <button
       className="place-self-center rounded-full bg-amber-500 px-3 text-black hover:bg-amber-400"
       onClick={() => {
-        follow.mutate({ id: user.id });
+        follow.mutate({ id: user!.id });
       }}
     >
       Follow
@@ -58,7 +69,7 @@ const FollowButton = ({
       href="/api/auth/signin"
       className="place-self-center rounded-full bg-amber-500 px-3 text-black hover:bg-amber-400"
       onClick={() => {
-        follow.mutate({ id: user.id });
+        follow.mutate({ id: user!.id });
       }}
     >
       Follow

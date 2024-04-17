@@ -5,14 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { FaEllipsis } from "react-icons/fa6";
 
 const DropdownMenu = ({ id }: { id: number }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const ref = useRef(null);
 
-  const handleClickOutside = (event: any) => {
+  const handleClickOutside = (event: MouseEvent) => {
     if (
       ref.current &&
-      !(ref.current as unknown as HTMLElement).contains(event.target)
+      !(ref.current as HTMLElement).contains(event.target as Node)
     ) {
       setIsOpen(false);
     }

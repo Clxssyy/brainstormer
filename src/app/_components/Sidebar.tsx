@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaBrain, FaHeart, FaPlus } from "react-icons/fa";
 import { TbArrowBarRight } from "react-icons/tb";
-import type { inferRouterOutputs } from "@trpc/server";
-import { AppRouter } from "~/server/api/root";
 import { useState } from "react";
+
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type User = RouterOutput["user"]["getById"];
@@ -87,8 +88,8 @@ const Sidebar = ({ user }: SidebarProps) => {
               >
                 <div className="flex gap-2">
                   <Image
-                    src={follow.follows.image || "/default-avatar.jpg"}
-                    alt={follow.follows.name || follow.followsId}
+                    src={follow.follows.image ?? "/default-avatar.jpg"}
+                    alt={follow.follows.name ?? follow.followsId}
                     width={24}
                     height={24}
                     className="rounded-full"

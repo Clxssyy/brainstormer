@@ -1,10 +1,11 @@
 "use client";
 
-import { inferRouterOutputs } from "@trpc/server";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { AppRouter } from "~/server/api/root";
+
+import type { AppRouter } from "~/server/api/root";
+import type { inferRouterOutputs } from "@trpc/server";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];

@@ -17,8 +17,8 @@ const CommentCard = async ({
   return (
     <div className="flex h-20 place-items-center gap-4 p-2 odd:bg-white/10">
       <Image
-        src={user!.image || "/default-avatar.jpg"}
-        alt={user!.name || "User"}
+        src={user!.image ?? "/default-avatar.jpg"}
+        alt={user!.name ?? "User"}
         width={128}
         height={128}
         className="h-8 w-8 rounded-full ring-2 ring-amber-400"
