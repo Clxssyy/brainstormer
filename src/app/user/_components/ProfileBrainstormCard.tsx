@@ -17,9 +17,6 @@ const ProfileBrainstormCard = ({ post }: { post: Post }) => {
   const isNew =
     currentDate.getTime() - postDate.getTime() < 1000 * 60 * 60 * 24;
 
-  console.log(post.pages[0]?.image ?? "/default-avatar.jpg");
-  console.log(post.pages[0]?.content);
-
   return (
     <Link
       href={`/post/${post.id}`}
