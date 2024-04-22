@@ -4,7 +4,9 @@ import BrainstormCard from "../_components/BrainstormCard";
 export const dynamic = "force-dynamic";
 
 const ExplorePage = async () => {
-  const postQuery = await api.post.getAll.query({});
+  const postQuery = await api.post.getAll.query({
+    published: true,
+  });
 
   if (!postQuery) {
     return null;
@@ -16,7 +18,7 @@ const ExplorePage = async () => {
         Explore
       </h1>
       <div className="grid gap-2 md:grid-cols-2">
-        {postQuery.items.map((post) => (
+        {postQuery.map((post) => (
           <BrainstormCard post={post} key={post.id} />
         ))}
       </div>

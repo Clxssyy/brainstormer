@@ -5,7 +5,7 @@ import { FaComment, FaHeart } from "react-icons/fa";
 import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-type Post = RouterOutput["post"]["getAll"]["items"][0];
+type Post = RouterOutput["post"]["getAll"][0];
 
 export const TagSpan = ({ tag }: { tag: string }) => {
   const colorDict: Record<number, string> = {

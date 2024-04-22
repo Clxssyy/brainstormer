@@ -6,7 +6,7 @@ import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "~/server/api/root";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-type Post = RouterOutput["post"]["getAll"]["items"][0];
+type Post = RouterOutput["post"]["getAllById"][0];
 
 const ProfileBrainstormCard = ({ post }: { post: Post }) => {
   const currentDate = new Date();
@@ -16,6 +16,9 @@ const ProfileBrainstormCard = ({ post }: { post: Post }) => {
 
   const isNew =
     currentDate.getTime() - postDate.getTime() < 1000 * 60 * 60 * 24;
+
+  console.log(post.pages[0]?.image ?? "/default-avatar.jpg");
+  console.log(post.pages[0]?.content);
 
   return (
     <Link

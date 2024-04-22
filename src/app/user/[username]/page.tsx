@@ -25,7 +25,6 @@ const userPage = async ({ params }: { params: { username: string } }) => {
   const posts = await api.post.getAllById.query({
     published: published,
     id: user.id,
-    direction: "asc",
   });
 
   return (
@@ -49,10 +48,9 @@ const userPage = async ({ params }: { params: { username: string } }) => {
             <p>Following: {user.following.length}</p>
           </div>
           <div className="flex justify-center gap-4">
-            <p>Posts: {posts.items.length}</p>
+            <p>Posts: {posts.length}</p>
             <p>
-              Likes:{" "}
-              {posts.items.reduce((acc, post) => acc + post.likes.length, 0)}
+              Likes: {posts.reduce((acc, post) => acc + post.likes.length, 0)}
             </p>
           </div>
         </div>
@@ -60,7 +58,7 @@ const userPage = async ({ params }: { params: { username: string } }) => {
         <div>
           <h1 className="text-2xl font-bold">Posts</h1>
           <div className="grid gap-4 md:grid-cols-2">
-            {posts.items.map((post) => {
+            {posts.map((post) => {
               return <ProfileBrainstormCard key={post.id} post={post} />;
             })}
           </div>

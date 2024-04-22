@@ -149,75 +149,46 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         published: z.boolean().nullish(),
-        limit: z.number().min(1).max(100).nullish(),
-        cursor: z.number().nullish(),
-        direction: z.enum(["asc", "desc"]).nullish(),
       }),
     )
-    .query(async (opts) => {
-      const { ctx, input } = opts;
-      const limit = input.limit ?? 8;
-      const cursor = input.cursor;
-      const direction = input.direction;
-      const published = input.published ?? true;
-      const page = await ctx.db.post.findMany({
-        orderBy: { id: direction ?? "desc" },
-        take: limit + 1,
-        skip: 0,
-        cursor: cursor ? { id: cursor } : undefined,
-        include: { createdBy: true, likes: true, comments: true, pages: true },
-        where: { published: published },
+    .query(async ({ ctx, input }) => {
+      return ctx.db.post.findMany({
+        include: {
+          createdBy: true,
+          likes: true,
+          comments: true,
+          pages: {
+            orderBy: { number: "asc" },
+          },
+        },
+        where: { published: input.published ?? undefined },
       });
-      const items = page.reverse();
-      let nextCursor: typeof cursor | null = null;
-      const hasMore = items.length > limit;
-      if (hasMore) {
-        const nextItem = items.shift();
-        nextCursor = nextItem?.id;
-      }
-
-      return {
-        items,
-        nextCursor,
-      };
     }),
 
   getAllById: publicProcedure
     .input(
       z.object({
         published: z.boolean().nullish(),
-        limit: z.number().min(1).max(100).nullish(),
-        cursor: z.number().nullish(),
-        direction: z.enum(["asc", "desc"]).nullish(),
         id: z.string(),
       }),
     )
-    .query(async (opts) => {
-      const { ctx, input } = opts;
-      const limit = input.limit ?? 10;
-      const cursor = input.cursor;
-      const direction = input.direction;
-      const published = input.published ?? undefined;
-      const page = await ctx.db.post.findMany({
-        orderBy: { id: direction ?? "desc" },
-        take: limit + 1,
-        skip: 0,
-        cursor: cursor ? { id: cursor } : undefined,
-        include: { createdBy: true, likes: true, comments: true, pages: true },
-        where: { published: published, createdById: input.id },
+    .query(async ({ ctx, input }) => {
+      return ctx.db.post.findMany({
+        include: {
+          createdBy: true,
+          likes: true,
+          comments: true,
+          pages: {
+            orderBy: { number: "asc" },
+          },
+        },
+        where: {
+          published: input.published ?? undefined,
+          createdBy: {
+            id: input.id,
+          },
+        },
       });
-      const items = page.reverse();
-      let nextCursor: typeof cursor | null = null;
-      const hasMore = items.length > limit;
-      if (hasMore) {
-        const nextItem = items.shift();
-        nextCursor = nextItem?.id;
-      }
-
-      return {
-        items,
-        nextCursor,
-      };
     }),
 
   delete: protectedProcedure
