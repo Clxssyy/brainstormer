@@ -92,7 +92,7 @@ const PageEdit = ({ page }: { page: Page }) => {
               })
             }
           >
-            Update
+            {pageUpdater.isLoading ? "Updating..." : "Update"}
           </button>
           {page.image ? undefined : <ImageButton page={page} />}
         </div>
