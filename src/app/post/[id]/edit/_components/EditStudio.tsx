@@ -217,7 +217,7 @@ const EditStudio = ({ id, post }: { id: string; post: Post }) => {
             });
           }}
         >
-          Update
+          {postUpdater.isLoading ? "Updating..." : "Update}
         </button>
       </div>
       <div className="mt-4">
