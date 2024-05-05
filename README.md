@@ -14,7 +14,7 @@ Turn your random ideas into full short stories with unique images. Share your id
 ## Todo
 
 - [ ] Mobile Overhaul
-- [ ] Post hashtags
+- [x] Post hashtags
 - [ ] Search for users / posts
 - [ ] Github actions
 - [ ] Project clean up
