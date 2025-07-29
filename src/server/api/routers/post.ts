@@ -85,7 +85,7 @@ export const postRouter = createTRPCRouter({
           });
         })
         .then(async (page) => {
-          const choices = await handlePrompt(input.prompt);
+          // const choices = await handlePrompt(input.prompt);
           const post = await ctx.db.post.findUnique({
             where: { id: page.postId },
             include: {
@@ -96,7 +96,7 @@ export const postRouter = createTRPCRouter({
             },
           });
           return {
-            choices: choices,
+            // choices: choices,
             post: post,
           };
         });

@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "~/server/api/root";
+import { useRouter } from "next/navigation";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type Post = RouterOutput["post"]["getById"];
@@ -15,11 +16,13 @@ const CreatePage = () => {
   const [choices, setChoices] = useState<string[]>([]);
   const [post, setPost] = useState<Post>(null);
   const [pageCount, setPageCount] = useState<number>(0);
+  const router = useRouter();
 
   const create = api.post.create.useMutation({
     onSuccess: async (data) => {
-      setChoices(data.choices ?? []);
+      // setChoices(data.choices ?? []);
       setPost(data.post);
+      router.replace(`/post/${data.post?.id}`);
     },
     onError: (err) => {
       console.error(err);
@@ -28,7 +31,7 @@ const CreatePage = () => {
 
   const addPage = api.post.addPage.useMutation({
     onSuccess: async (data) => {
-      setChoices(data.choices ?? []);
+      // setChoices(data.choices ?? []);
     },
     onError: (err) => {
       console.error(err);
@@ -43,7 +46,12 @@ const CreatePage = () => {
         <h1 className="text-nowrap bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-2xl font-bold text-transparent">
           What are you brainstorming?
         </h1>
-        <div className="flex w-full grow divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
+        <div className="relative flex w-full grow divide-x divide-amber-400 rounded border border-amber-400 bg-neutral-900">
+          <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white">
+            This was a senior project and OpenAI API use has been disabled due
+            to cost / hosting timing out before response with free plan.
+          </p>
+
           {pageCount === 6 ? (
             <Link
               href={`/post/${post?.id}`}
